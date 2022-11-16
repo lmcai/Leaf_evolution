@@ -24,15 +24,17 @@ function msk = MskGen(img)
 	%plot(S)
 end
 
-function main
-	img_files=dir('~/Downloads/Orobanchaceae_venation/*.tif');
+function output=Loop_among_files(in_dir)
+	%in_dir='~/Downloads/Orobanchaceae_venation/*.tif'
+	img_files=dir(in_dir);
 	img_files={img_files.name};
 	for i = 1:length(img_files)
 		raw=imread(join(['~/Downloads/Orobanchaceae_venation/',string(img_files(i))],""));
 		file_name=split(string(img_files(i)),'.')
 		file_name=string(file_name(1))
-		msk=MskGen(raw)
+		msk=MskGen(raw);
 		imwrite(msk,join(['~/Downloads/Orobanchaceae_venation/',file_name,'_mask.png'],""))
 		imwrite(raw,join(['~/Downloads/Orobanchaceae_venation/',file_name,'.png'],""))
+		output=1
 	end
 end
