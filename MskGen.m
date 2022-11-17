@@ -5,9 +5,6 @@ function msk = MskGen(img)
 	F = fspecial("average",3);
 	ysmooth = imfilter(yAdj,F,'replicate');
 	msk = imbinarize(ysmooth);
-	%fill in holes and filter image, retaining only the largest object
-	msk = imfill(msk, 'holes');
-	msk = bwareafilt(msk, 1);
 	
 	%remove connected small objects, blur or morphological operation to open the image
 	msk=bwareaopen(msk, 10000);
@@ -15,6 +12,9 @@ function msk = MskGen(img)
 	SE = strel("disk",50);
 	yopen = imopen(ysmooth,SE);
 	msk=imbinarize(yopen);
+	%fill in holes and filter image, retaining only the largest object
+	%msk = imfill(msk, 'holes');
+	%msk = bwareafilt(msk, 1);
 	msk=~msk;
 
 	%alternative: blur the image, but corners and borders have artificial pixels
