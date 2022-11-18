@@ -8,14 +8,15 @@ function msk = MskGen(img)
 	
 	%remove connected small objects, blur or morphological operation to open the image
 	msk=bwareaopen(msk, 10000);
-	%morphological operation isn't as good as blurring
-	SE = strel("disk",50);
+	%fill in holes and filter image, retaining only the largest object
+	msk = imfill(msk, 'holes');
+	%morphological operation
+	SE = strel("disk",17);
 	yopen = imopen(ysmooth,SE);
 	msk=imbinarize(yopen);
-	%fill in holes and filter image, retaining only the largest object
-	%msk = imfill(msk, 'holes');
-	%msk = bwareafilt(msk, 1);
 	msk=~msk;
+	msk = imfill(msk, 'holes');
+	msk = bwareafilt(msk, 1);
 
 	%alternative: blur the image, but corners and borders have artificial pixels
 	%windowSize = 51;
@@ -34,10 +35,10 @@ function Loop_among_files()
 	format compact;
 	fontSize = 22;
 	
-	img_files=dir('~/Downloads/Orobanchaceae_venation/*.tif');
+	img_files=dir('~/Downloads/Orobanchaceae_venation/Raw_TIF/*.tif');
 	img_files={img_files.name};
 	for i = 1:length(img_files)
-		raw=imread(join(['~/Downloads/Orobanchaceae_venation/',string(img_files(i))],""));
+		raw=imread(join(['~/Downloads/Orobanchaceae_venation/Raw_TIF/',string(img_files(i))],""));
 		file_name=split(string(img_files(i)),'.')
 		file_name=string(file_name(1))
 		msk=MskGen(raw);
