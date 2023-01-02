@@ -13,21 +13,21 @@ image = image(:,:,1);
 
 %as bwtraceboundary needs an intial direction, choose the 
 %first one that works
-if image(start_r+1,start_c+1) == 255
+if image(start_r+1,start_c+1) == 1
     dir = 'SE';
-elseif image(start_r,start_c+1) == 255
+elseif image(start_r,start_c+1) == 1
     dir = 'E';
-elseif image(start_r-1,start_c+1) == 255
+elseif image(start_r-1,start_c+1) == 1
     dir = 'NE';
-elseif image(start_r-1,start_c) == 255
+elseif image(start_r-1,start_c) == 1
     dir = 'N';
-elseif image(start_r-1,start_c-1) == 255
+elseif image(start_r-1,start_c-1) == 1
     dir = 'NW';
-elseif image(start_r,start_c-1) == 255
+elseif image(start_r,start_c-1) == 1
     dir = 'W';
-elseif image(start_r+1,start_c-1) == 255
+elseif image(start_r+1,start_c-1) == 1
     dir = 'SW';
-elseif image(start_r+1,start_c) == 255
+elseif image(start_r+1,start_c) == 1
     dir = 'S';
 else
     assert(0);
