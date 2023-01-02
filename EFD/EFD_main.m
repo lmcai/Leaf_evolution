@@ -3,7 +3,7 @@
 imwrite(im2bw(imread('cat.png')), 'bw_cat.png')
 
 % trace exterior boundaries
-chain = mk_chain(bw_cat.png’);
+chain = mk_chain('bw_cat.png');
 [cc] = chaincode(chain);
 
 %generate EFD
