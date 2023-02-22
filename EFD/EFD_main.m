@@ -3,11 +3,13 @@
 imwrite(im2bw(imread('cat.png')), 'bw_cat.png')
 
 % trace exterior boundaries
-chain = mk_chain(bw_cat.png’);
+chain = mk_chain('bw_cat.png');
 [cc] = chaincode(chain);
 
 %generate EFD
-coeffs = calc_harmonic_coefficients(transpose([cc.code]), 70)
+plot_chain_code(transpose([cc.code]));
+hold
+plot_fourier_approx(transpose([cc.code]), 10, 1000, 0, 'r');
 
 
 
