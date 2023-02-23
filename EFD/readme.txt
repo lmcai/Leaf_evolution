@@ -1,5 +1,15 @@
                               R E A D M E
                           ======================
+                            Liming Cai (daybreak.chua@gmail.com
+
+These MatLab codes are intended to process RGB images of leaf to extract their outline 
+and analyse it using EFD.
+To implement, first use rgb2bw.m to convert images to silhouettes (binary image) then 
+use EFD_main.m to get EFD coefficient for PCA analysis.                            
+                            
+                            
+==================================================
+% Below is the readme file from the original contributor who wrote the EFD analysis                            
                             Auralius Manurung
                            auralius@lavabit.com
 
