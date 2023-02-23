@@ -10,17 +10,18 @@ mask = grayImg < 220; % adjust threshold value as needed
 % Fill holes in the mask
 filledMask = imfill(mask, 'holes');
 
-% Remove small objects from the mask
-filteredMask = bwareaopen(filledMask, 50); % adjust minimum area as needed
+% Retain only one biggest object from the mask
+filteredMask = bwareafilt(filledMask, 1);
+imwrite(filteredMask,'test_leaf.bw.png')
 
 % Apply the mask to the original image
-maskedImg = bsxfun(@times, img, cast(filteredMask, 'like', img));
+% maskedImg = bsxfun(@times, img, cast(filteredMask, 'like', img));
 
 % Display the original and masked images side by side
-figure;
-subplot(1,2,1);
-imshow(img);
-title('Original Image');
-subplot(1,2,2);
-imshow(maskedImg);
-title('Masked Image');
+% figure;
+% subplot(1,2,1);
+% imshow(img);
+% title('Original Image');
+% subplot(1,2,2);
+% imshow(maskedImg);
+% title('Masked Image');
