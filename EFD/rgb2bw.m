@@ -14,6 +14,9 @@ mask = imbinarize(grayImg);
 mask = ~mask;
 filledMask = imfill(mask, 'holes');
 filledMask = ~filledMask;
+SE = strel("disk",5);
+filledMask = imclose(filledMask,SE);
+filledMask = imfill(filledMask, 'holes');
 
 % Retain only one biggest object from the mask
 filteredMask = bwareafilt(filledMask, 1);
