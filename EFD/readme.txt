@@ -4,8 +4,9 @@
 
 These MatLab codes are intended to process RGB images of leaf to extract their outline 
 and analyse it using EFD.
-To implement, first use rgb2bw.m to convert images to silhouettes (binary image) then 
-use EFD_main.m to get EFD coefficient for PCA analysis.                            
+If using herbarium specimen image, use specimen_img_trace_to_individual_bw_mask.m to segment individual leaves first.
+If using stained leaves, first use rgb2bw.m to convert images to silhouettes (binary image).
+Then use EFD_main.m to get EFD coefficient for PCA analysis.                            
                             
                             
 ==================================================
