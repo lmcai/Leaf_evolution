@@ -9,7 +9,7 @@ library(maps)
 
 # IF YOU HAVE ONLY ONE SPECIES ----
 
-myspecies <- c("Galemys pyrenaicus")
+myspecies <- c("Pseudomelasma pediculariodes")
 
 # download GBIF occurrence data for this species; this takes time if there are many data points!
 gbif_data <- occ_data(scientificName = myspecies, hasCoordinate = TRUE, limit = 20000)
