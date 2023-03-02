@@ -1,6 +1,6 @@
                               R E A D M E
                           ======================
-                            Liming Cai (daybreak.chua@gmail.com
+                   Liming Cai (daybreak.chua@gmail.com)
 
 These MatLab codes are intended to process RGB images of leaf to extract their outline 
 and analyse it using EFD.
