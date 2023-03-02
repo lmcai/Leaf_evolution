@@ -8,11 +8,15 @@ library(sp)
 ##############################
 #I. read in data or retreive data from gbif
 #select gbif columns of interest
-dat <- dat %>%
-  dplyr::select(species, decimalLongitude, decimalLatitude, countryCode, individualCount,
-         gbifID, family, taxonRank, coordinateUncertaintyInMeters, year,
-         basisOfRecord, institutionCode, datasetName)
-
+subdat <- dat %>%
+  dplyr::select(species, decimalLongitude, decimalLatitude, elevation, countryCode,
+         gbifID, taxonRank, coordinateUncertaintyInMeters, year,
+         basisOfRecord, institutionCode)
+         
+subdat=subdat[!is.na(subdat$decimalLongitude),]
+subdat<- subdat%>%
+	filter(taxonRank =='SPECIES')
+	
 # remove records without coordinates
 #dat <- dat%>%
 #  filter(!is.na(decimalLongitude))%>%
@@ -23,7 +27,7 @@ dat <- dat %>%
 #plot data to get an overview
 wm <- borders("world", colour="gray50", fill="gray50")
 ggplot()+ coord_fixed()+ wm +
-  geom_point(data = dat, aes(x = decimalLongitude, y = decimalLatitude),
+  geom_point(data = subdat, aes(x = decimalLongitude, y = decimalLatitude),
              colour = "darkred", size = 0.5)+
   theme_bw()
 
@@ -33,17 +37,29 @@ ggplot()+ coord_fixed()+ wm +
 #1) identify geographic outliers
 
 #convert country code from ISO2c to ISO3c
-dat$countryCode <-  countrycode(dat$countryCode, origin =  'iso2c', destination = 'iso3c')
+subdat$countryCode <-  countrycode(subdat$countryCode, origin =  'iso2c', destination = 'iso3c')
 
 #flag problems
-dat <- data.frame(dat)
-flags <- clean_coordinates(x = dat, 
+subdat <- data.frame(subdat)
+flags <- clean_coordinates(x = subdat, 
                            lon = "decimalLongitude", 
                            lat = "decimalLatitude",
                            countries = "countryCode",
                            species = "species",
                           tests = c("capitals", "centroids", "equal","gbif", "institutions",
                                     "zeros", "countries")) # most test are on by default
+
+#Exclude problematic records
+dat_cl <- subdat[flags$.summary,]
+
+#The flagged records
+dat_fl <- subdat[!flags$.summary,]
+#visualize
+ggplot()+ coord_fixed()+ wm +
+  geom_point(data = dat_cl, aes(x = decimalLongitude, y = decimalLatitude),
+             colour = "darkred", size = 0.5)+
+  theme_bw()
+  
 #2) identify temporal outliers
 flags <- cf_age(x = dat_cl,
                 lon = "decimalLongitude",
@@ -60,7 +76,7 @@ hist(dat_cl$coordinateUncertaintyInMeters / 1000, breaks = 20)
 
 
 dat_cl <- dat_cl %>%
-  filter(coordinateUncertaintyInMeters / 1000 <= 100 | is.na(coordinateUncertaintyInMeters))
+  filter(coordinateUncertaintyInMeters / 1000 <= 10 | is.na(coordinateUncertaintyInMeters))
 
 #Remove unsuitable data sources, especially fossils 
 #which are responsible for the majority of problems in this case
@@ -76,13 +92,13 @@ dat_cl <- filter(dat_cl, basisOfRecord == "HUMAN_OBSERVATION" |
                          basisOfRecord == "PRESERVED_SPECIMEN")
 
 #Individual count
-table(dat_cl$individualCount)
+#table(dat_cl$individualCount)
 ## 
 ##   1   2   3   4   5   6   9  11  14  15  20 
 ## 108  35   4   5   5   5   1   3   1   1   1
-dat_cl <- dat_cl%>%
-  filter(individualCount > 0 | is.na(individualCount))%>%
-  filter(individualCount < 99 | is.na(individualCount)) # high counts are not a problem
+#dat_cl <- dat_cl%>%
+#  filter(individualCount > 0 | is.na(individualCount))%>%
+#  filter(individualCount < 99 | is.na(individualCount)) # high counts are not a problem
 
 #Age of records
 table(dat_cl$year)
@@ -92,12 +108,12 @@ table(dat_cl$year)
 dat_cl <- dat_cl%>%
   filter(year > 1945) # remove records from before second world war
 
-table(dat_cl$family) #that looks good
+#table(dat_cl$family) #that looks good
 ## 
 ## Felidae 
 ##    4170
-dat_cl <- dat_cl%>%
-  filter(family == 'Felidae')
+#dat_cl <- dat_cl%>%
+#  filter(family == 'Felidae')
 
 table(dat_cl$taxonRank) # this is also good
 ## 
