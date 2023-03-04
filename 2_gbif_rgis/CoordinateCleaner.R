@@ -70,7 +70,7 @@ clean_records <-function(sp){
 	#Remove records with low coordinate precision
 	#hist(dat_cl$coordinateUncertaintyInMeters / 1000, breaks = 20)
 	dat_cl <- dat_cl %>%
-		filter(coordinateUncertaintyInMeters / 1000 <= 10 | is.na(coordinateUncertaintyInMeters))
+		filter(coordinateUncertaintyInMeters / 1000 <= 30 | is.na(coordinateUncertaintyInMeters))
 
 	#visualize
 	pdf(file = paste(sp,'.cleaned.pdf',sep=''), width = 8, height = 6)
