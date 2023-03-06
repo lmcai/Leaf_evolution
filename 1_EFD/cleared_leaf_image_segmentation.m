@@ -10,10 +10,11 @@ fontSize = 22;
 
 %place high contrast leaf images in a folder and process using the rgb2bw_easy function
 %set working directory
-work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/022322/easy/'
+work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/030423/'
 img_files=dir(join([work_dir,'*.JPG'],""));
 img_files={img_files.name};
 	
+% work with high contrast
 for i = 1:length(img_files)
 	raw=imread(join([work_dir,string(img_files(i))],""));
 	file_name=split(string(img_files(i)),'.')
