@@ -17,7 +17,7 @@ img_files={img_files.name};
 % work with high contrast
 for i = 1:length(img_files)
 	raw=imread(join([work_dir,string(img_files(i))],""));
-	file_name=split(string(img_files(i)),'.')
+	file_name=split(string(img_files(i)),'.JP')
 	file_name=string(file_name(1))
 	msk=rgb2bw_easy(raw);
 	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
