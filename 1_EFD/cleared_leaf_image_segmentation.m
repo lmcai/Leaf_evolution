@@ -32,8 +32,42 @@ img_files={img_files.name};
 	
 for i = 1:length(img_files)
 	raw=imread(join([work_dir,string(img_files(i))],""));
+    % if dealing with tiff file
+    % raw(:,:,4) = [];
 	file_name=split(string(img_files(i)),'.')
 	file_name=string(file_name(1))
 	msk=rgb2bw_lowcontrast(raw);
+	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
+end
+
+
+% for image taken with Canon EOS, it needs to be exported to tiff first,
+% then croped
+
+work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/022322/'
+img_files=dir(join([work_dir,'*.tiff'],""));
+img_files={img_files.name};
+	
+
+for i = 1:length(img_files)
+	raw=imread(join([work_dir,string(img_files(i))],""));
+    % if dealing with tiff file
+    raw(:,:,4) = [];
+    [rows, cols, chans] = size(raw)
+    if rows>cols
+        topRow = 850;
+        bottomRow = 4500;
+        leftColumn = 100;
+        rightColumn = 3300;
+    else
+        topRow = 100;
+        bottomRow = 3300;
+        leftColumn = 850;
+        rightColumn = 4500;
+    end 
+    croppedImage = raw(topRow:bottomRow, leftColumn:rightColumn);
+	file_name=split(string(img_files(i)),'.')
+	file_name=string(file_name(1))
+	msk=rgb2bw_croppedtiff(croppedImage);
 	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
 end
