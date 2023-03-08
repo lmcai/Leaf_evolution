@@ -8,6 +8,7 @@ function BW = rgb2bw_lowcontrast(img)
 	mask = imbinarize(grayImg);
 	% Fill holes in the mask
 	mask = ~mask;
+	mask = imclearborder(mask);
 	filledMask = imfill(mask, 'holes');
 	SE = strel("disk",5);
 	filledMask = imclose(filledMask,SE);
