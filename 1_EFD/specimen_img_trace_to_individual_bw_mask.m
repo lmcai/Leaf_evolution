@@ -1,4 +1,6 @@
 img = imread('rgb_image.png');
+img=rgb2gray(img);
+img=imadjust(img);
 %use color threshold app to segment and get BW
 
 % remove small area
