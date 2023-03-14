@@ -4,12 +4,12 @@
 
 These MatLab codes are intended to process RGB images of leaf to extract their outline and analyse it using EFD.
 
-I. Segment leaf outline from images
+#I. Segment leaf outline from images
 
 If using herbarium specimen image, use specimen_img_trace_to_individual_bw_mask.m to segment individual leaves.
 If using stained leaves, use cleared_leaf_image_segmentation.m to convert images to binary masks.
 
-II. Rotate the black-white mask to get dimension measurements
+#II. Rotate the black-white mask to get dimension measurements
 
 1. Place all images in a folder and call the function batch_rotate_images('folder') to interactively define the y axis of the image.
 
@@ -29,12 +29,12 @@ end
 filename = 'leaf_dimention.csv';
 writematrix(leaf_dim, filename);
 ```
-III. EFD analysis
+#III. EFD analysis
 EFD_main.m to get EFD coefficient for PCA analysis.                            
                             
                             
 ==================================================
-% Below is the readme file from the original contributor who wrote the EFD analysis                            
+Below is the readme file from the original contributor who wrote the EFD analysis                            
                             Auralius Manurung
                            auralius@lavabit.com
 
