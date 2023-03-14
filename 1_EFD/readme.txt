@@ -11,9 +11,26 @@ If using stained leaves, use cleared_leaf_image_segmentation.m to convert images
 
 II. Rotate the black-white mask to get dimension measurements
 
-Place all images in a folder and call the function batch_rotate_images('folder') to interactively define the y axis of the image.
+1. Place all images in a folder and call the function batch_rotate_images('folder') to interactively define the y axis of the image.
 
-Then use EFD_main.m to get EFD coefficient for PCA analysis.                            
+2. Then call function dimention_measurement to obtain aspect ratio and area for each leaf
+```
+image_files = dir(fullfile(folder_path, 'rotate*.png'));
+leaf_dim = [];
+for i = 1:numel(image_files)
+    img = imread(fullfile(folder_path, image_files(i).name));
+	[width len area]=dimention_measurement(img);
+	sp=string(image_files(i).name);
+	new_row = [sp string(width) string(len) string(area)]
+	leaf_dim = vertcat(leaf_dim, new_row)
+end
+
+%output to csv
+filename = 'leaf_dimention.csv';
+csvwrite(filename, leaf_dim);
+```
+III. EFD analysis
+EFD_main.m to get EFD coefficient for PCA analysis.                            
                             
                             
 ==================================================
