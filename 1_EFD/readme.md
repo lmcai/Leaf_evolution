@@ -7,7 +7,7 @@ These MatLab codes are intended to process RGB images of leaf to extract their o
 # I. Segment leaf outline from images
 
 If using herbarium specimen image, use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves.
-If using stained leaves, use `cleared_leaf_image_segmentation.m to convert images` to binary masks.
+If using stained leaves, use `cleared_leaf_image_segmentation.m` to convert images to binary masks.
 
 # II. Rotate the black-white mask to get dimension measurements
 
