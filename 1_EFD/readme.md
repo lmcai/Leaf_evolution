@@ -6,14 +6,14 @@ These MatLab codes are intended to process RGB images of leaf to extract their o
 
 # I. Segment leaf outline from images
 
-If using herbarium specimen image, use specimen_img_trace_to_individual_bw_mask.m to segment individual leaves.
-If using stained leaves, use cleared_leaf_image_segmentation.m to convert images to binary masks.
+If using herbarium specimen image, use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves.
+If using stained leaves, use `cleared_leaf_image_segmentation.m to convert images` to binary masks.
 
 # II. Rotate the black-white mask to get dimension measurements
 
-1. Place all images in a folder and call the function batch_rotate_images('folder') to interactively define the y axis of the image.
+1. Place all images in a folder and call the function `batch_rotate_images('folder')` to interactively define the y axis of the image.
 
-2. Then call function dimention_measurement to obtain aspect ratio and area for each leaf
+2. Then call function `dimention_measurement` to obtain aspect ratio and area for each leaf
 ```
 image_files = dir(fullfile(folder_path, 'rotate*.png'));
 leaf_dim = ["ID" "width" "length" "area"];
