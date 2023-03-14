@@ -4,6 +4,7 @@ function BW = rgb2bw_lowcontrast(img)
 	grayImg = imadjust(grayImg);
 	F = fspecial("average",3);
 	grayImg = imfilter(grayImg,F,'replicate');
+	igrayImg=medfilt2(grayImg,[5 5]);
 	% Threshold the image to create a binary mask
 	mask = imbinarize(grayImg);
 	% Fill holes in the mask
