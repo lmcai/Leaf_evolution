@@ -11,12 +11,9 @@ If using stained leaves, use `cleared_leaf_image_segmentation.m` to convert imag
 
 # II. Rotate the black-white mask to get dimension measurements
 
-1. Place all images in a folder and call the function `batch_rotate_images('folder')` to rotate image. This function will write a rotated image `rotated_*` to the folder 
-```
-%rotate image and measure dimension
-batch_rotate_images(folder_path);
-```
-2. Manual inspect the rotated leaves, heart shaped can be tricky. Place leaves need to be manually rotated in one folder and use `batch_rotate_images_manual` 
+1. Place all images in a folder and call the function `batch_rotate_images(folder_path)` to rotate image. This function will write a rotated image `rotated_*` to the folder 
+
+2. Manual inspect the rotated leaves, heart shaped can be tricky. Place these leaves need to be manually rotated in one folder and use `batch_rotate_images_manual(folder_path)` 
 
 3. Measure the dimension of the leaves
 ```
@@ -25,8 +22,7 @@ leaf_dim = ["ID" "width" "length" "area"];
 for i = 1:numel(image_files)
     img = imread(fullfile(folder_path, image_files(i).name));
 	[width len area]=dimention_measurement(img);
-	sp=string(image_files(i).name);
-	new_row = [sp string(width) string(len) string(area)]
+	new_row = [string(image_files(i).name) string(width) string(len) string(area)]
 	leaf_dim = vertcat(leaf_dim, new_row)
 end
 
