@@ -1,3 +1,5 @@
-`stardardize_species_names.R` is used to standardize and correct species names recorded from the species
-`gbif.R` is used to download species distribution coordinates from GBIF
-`CoordinateCleaner.R` is used to clean up occurrence records
+1. Use `stardardize_species_names.R` to standardize and correct species names recorded from the specimens
+
+2. Use `gbif.R` to download species distribution coordinates from GBIF
+
+3. Use `CoordinateCleaner.R` to clean up occurrence records and generate maps that can be manually inspected
