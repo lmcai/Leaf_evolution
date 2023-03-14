@@ -16,7 +16,7 @@ II. Rotate the black-white mask to get dimension measurements
 2. Then call function dimention_measurement to obtain aspect ratio and area for each leaf
 ```
 image_files = dir(fullfile(folder_path, 'rotate*.png'));
-leaf_dim = [];
+leaf_dim = ["ID" "width" "length" "area"];
 for i = 1:numel(image_files)
     img = imread(fullfile(folder_path, image_files(i).name));
 	[width len area]=dimention_measurement(img);
@@ -27,7 +27,7 @@ end
 
 %output to csv
 filename = 'leaf_dimention.csv';
-csvwrite(filename, leaf_dim);
+writematrix(leaf_dim, filename);
 ```
 III. EFD analysis
 EFD_main.m to get EFD coefficient for PCA analysis.                            
