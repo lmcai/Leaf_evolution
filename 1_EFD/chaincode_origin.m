@@ -1,4 +1,4 @@
-function [cc] = chaincode(b, ratioScale, unwrap)
+function [cc] = chaincode(b,unwrap)
 %   Freeman Chain Code
 %
 %   Description: Give Freeman chain code 8-connected representation of a
@@ -15,7 +15,6 @@ function [cc] = chaincode(b, ratioScale, unwrap)
 %   b       - boundary as np-by-2 array; 
 %             np is the number of pixels and each element is a pair (y,x) of
 %             pixel coordinates
-%   ratioScale - if normalized, the factor by which the image was scaled
 %   unwrap  - (optional, default=false) unwrap code;
 %             if enable phase inversions are eliminated
 %            
@@ -54,7 +53,7 @@ function [cc] = chaincode(b, ratioScale, unwrap)
 %
 
 % check input arguments
-if nargin>3 
+if nargin>2 
     error('Too many arguments');
 elseif nargin==0
     error('Too few arguments');
@@ -64,24 +63,12 @@ end
 % compute dx,dy  by a circular shift on coords arrays by 1 element
 sb=circshift(b,[-1 0]);
 delta=sb-b;
-
-notFoundDeltaRatio = true;
-index=1;
-while notFoundDeltaRatio
-  if delta(index,2) ~= 0  % <- Your control to break the loop
-     notFoundDeltaRatio = false;
-     deltaRatio = delta(index,2);
-  end
-  index = index + 1;
-end
-delta = round(delta / deltaRatio);
-%delta = round(delta / (ratioScale * ratioScale *  .01)); % Compensate for normalization [DC]
 % check if boundary is close, if not cut last element
-if abs(delta(end,1))> 1 || abs(delta(end,2))> 1
+if abs(delta(end,1))>1 || abs(delta(end,2))>1
     delta=delta(1:(end-1),:);
 end
 % check if boundary is 8-connected
-n8c=find(abs(delta(:,1))> 1 | abs(delta(:,2))> 1);
+n8c=find(abs(delta(:,1))>1 | abs(delta(:,2))>1);
 if size(n8c,1)>0 
     s='';
     for i=1:size(n8c,1)
@@ -89,11 +76,6 @@ if size(n8c,1)>0
     end
     error('Curve isn''t 8-connected in elements: \n%s',s);
 end
-% check if boundary is 8-connected
-% conncomp = bwconncomp(b,8);
-% if conncomp.Connectivity ~= 8
-%     disp('hmmmm...not 8-connected...');
-% end
 
 
 % convert dy,dx pairs to scalar indexes thinking to them (+1) as base-3 numbers
@@ -119,7 +101,7 @@ cm([1 2 3 4 6 7 8 9])=[5 6 7 4 0 3 2 1];
 % finally the chain code array and the starting point
 cc.x0=b(1,2);
 cc.y0=b(1,1);
-cc.code=(cm(idx));
+cc.code=(cm(idx))';
 
 % If unwrapping is required, use the following algorithm
 %
