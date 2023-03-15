@@ -21,8 +21,8 @@ image_files = dir(fullfile(folder_path, 'rotate*.png'));
 leaf_dim = ["ID" "width" "width_bbx" "length" "area"];
 for i = 1:numel(image_files)
     img = imread(fullfile(folder_path, image_files(i).name));
-	[width len area]=dimention_measurement(img);
-	new_row = [string(image_files(i).name) string(width) string(len) string(area)]
+	[width width_bbx len area]=dimention_measurement(img);
+	new_row = [string(image_files(i).name) string(width) string(width_bbx) string(len) string(area)]
 	leaf_dim = vertcat(leaf_dim, new_row)
 end
 
