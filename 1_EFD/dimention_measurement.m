@@ -1,6 +1,7 @@
-function [width length total_area]=dimention_measurement(im)
+function [width width_bbx length total_area]=dimention_measurement(im)
 	stats = regionprops(im, 'BoundingBox');
 	width = get_width(im);
+	width_bbx = stats(1).BoundingBox(3);
 	length = stats(1).BoundingBox(4);
 	% Calculate the connected components in the binary image
 	cc = bwconncomp(im);

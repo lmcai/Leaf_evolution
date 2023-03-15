@@ -18,7 +18,7 @@ If using stained leaves, use `cleared_leaf_image_segmentation.m` to convert imag
 3. Measure the dimension of the leaves
 ```
 image_files = dir(fullfile(folder_path, 'rotate*.png'));
-leaf_dim = ["ID" "width" "length" "area"];
+leaf_dim = ["ID" "width" "width_bbx" "length" "area"];
 for i = 1:numel(image_files)
     img = imread(fullfile(folder_path, image_files(i).name));
 	[width len area]=dimention_measurement(img);
