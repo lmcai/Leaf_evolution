@@ -33,7 +33,7 @@ writematrix(leaf_dim, filename);
 # III. EFD analysis
 EFD_main.m to get EFD coefficient for PCA analysis.                            
                             
-                            
+# IV. Mean EFD outline for PCA                            
 ==================================================
 Below is the readme file from the original contributor who wrote the EFD analysis                            
                             Auralius Manurung
