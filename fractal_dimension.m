@@ -17,11 +17,6 @@ function fractalDimension = fractal_dimension(contour)
     	numBoxes(i) = sum(sum(any(any(boxes))));
     	boxSizes(i) = i;
 	end
-	%for i = 1:maxBoxSize
-   	%	boxes = reshape(binaryImage(1:i*floor(size(binaryImage,1)/i),1:i*floor(size(binaryImage,2)/i)), i, i, []);
-    %	numBoxes(i) = sum(sum(any(any(boxes))));
-    %	boxSizes(i) = maxBoxSize/i;
-	%end
 
 	% Plot the results on a log-log plot
 	loglog(boxSizes, numBoxes, 'o');
