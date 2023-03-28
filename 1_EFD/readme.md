@@ -30,10 +30,15 @@ end
 filename = 'leaf_dimention.csv';
 writematrix(leaf_dim, filename);
 ```
-# III. EFD analysis
+# III. Fractal dimension as a measurement of leaf dissection
+
+Use the function `fractal_dimension` to calculate a value for each individual leaf image.
+
+# IV. EFD analysis
 EFD_main.m to get EFD coefficient for PCA analysis.                            
                             
-# IV. Mean EFD outline for PCA                            
+# IV. Mean EFD outline for PCA
+                            
 ==================================================
 Below is the readme file from the original contributor who wrote the EFD analysis                            
                             Auralius Manurung
