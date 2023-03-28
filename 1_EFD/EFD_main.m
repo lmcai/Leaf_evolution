@@ -7,7 +7,7 @@ n=10
 
 % 'bw.png' is a black-white binary mask of leaf shape, trace exterior boundaries
 chain = mk_chain('bw.png');
-[cc] = chaincode(chain);
+[cc] = chaincode_origin(chain);
 
 %output first to n-th EFD coefficients
 for i = 1 : n
