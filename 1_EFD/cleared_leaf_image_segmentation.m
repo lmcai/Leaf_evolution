@@ -69,3 +69,23 @@ for i = 1:length(img_files)
 	msk=rgb2bw_croppedtiff(croppedImage);
 	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
 end
+
+
+% for image taken with Nikon imaging center, use edge detection instead
+work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/Nikon_imagingcenter/'
+img_files=dir(join([work_dir,'*.tif'],""));
+img_files={img_files.name};
+	
+
+for i = 1:length(img_files)
+	raw=imread(join([work_dir,string(img_files(i))],""));
+	BW=rgb2gray(raw);
+	BW=edge(BW);
+	SE = strel("disk",7);
+	filledMask = imclose(BW,SE);
+	filledMask=bwareafilt(filledMask,1);
+	filledMask=imfill(filledMask,"holes");
+	file_name=split(string(img_files(i)),'.')
+	file_name=string(file_name(1))
+	imwrite(filledMask,join([work_dir,file_name,'.bw.png'],""))
+end
