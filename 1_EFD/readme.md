@@ -33,6 +33,19 @@ writematrix(leaf_dim, filename);
 # III. Fractal dimension as a measurement of leaf dissection
 
 Use the function `fractal_dimension` to calculate a value for each individual leaf image.
+```
+folder_path = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/022323/';
+image_files = dir(fullfile(folder_path, 'rotate*.png'));
+leaf_fd = ["ID" "fd"];
+for i = 1:numel(image_files)
+	curr_fd=fractal_dimension(fullfile(folder_path, image_files(i).name));
+	leaf_fd = vertcat(leaf_fd, [image_files(i).name string(curr_fd)]);
+end
+
+filename = 'leaf_fractal_dimention.csv';
+writematrix(leaf_fd, filename);
+
+```
 
 # IV. EFD analysis
 EFD_main.m to get EFD coefficient for PCA analysis.                            
