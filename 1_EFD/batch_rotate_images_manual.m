@@ -16,9 +16,33 @@ function batch_rotate_images_manual(folder_path)
     % Compute the angle of rotation
     angle = atan2(y(2) - y(1), x(2) - x(1)) * 180 / pi - 90;
     % Rotate the image
-    rotated_img = imrotate(img, angle, 'crop');
+    rotatedLeafBw = imrotate(img, angle);
+    % crop image based on bounding box
+	stats = regionprops(rotatedLeafBw, 'BoundingBox');
+	boundingBox = stats.BoundingBox;
+	% Calculate new size
+	newWidth = boundingBox(3) * 2;
+	newHeight = boundingBox(4) * 2;
+	% Calculate upper-left corner of new crop
+	centerX = boundingBox(1) + boundingBox(3) / 2;
+	centerY = boundingBox(2) + boundingBox(4) / 2;
+	newX = centerX - newWidth / 2;
+	newY = centerY - newHeight / 2;
+	
+	% Crop binary image
+	crop_rotatedLeafBw = imcrop(rotatedLeafBw, [newX, newY, newWidth, newHeight]);
     % Save the rotated image
-    imwrite(rotated_img, fullfile(folder_path, ['rotated_', image_files(i).name]));
+    imwrite(crop_rotatedLeafBw, fullfile(folder_path, ['rotated_', image_files(i).name]));
+    
+    [rows, cols] = find(crop_rotatedLeafBw, 1);
+	startPoint = [rows(1), cols(1)];
+	% Trace boundary clockwise
+	boundary = bwtraceboundary(crop_rotatedLeafBw, startPoint, 'n');
+	fileID = fopen(fullfile(folder_path, [image_files(i).name,'_outline.tsv']),'w');
+	dlmwrite(fullfile(folder_path, [image_files(i).name,'_outline.tsv']), boundary, 'delimiter', '\t');
+	% Close file
+	fclose(fileID);
+	
     % Close the current figure
     close;
 end
