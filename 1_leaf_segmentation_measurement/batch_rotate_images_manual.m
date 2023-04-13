@@ -8,6 +8,9 @@ function batch_rotate_images_manual(folder_path)
     
     % Read in the image
     img = imread(fullfile(folder_path, image_files(i).name));
+    img = imfill(img,"holes");
+    gaussianFilter = fspecial('gaussian', [5 5], 1);
+	img = imfilter(img, gaussianFilter);
 	% Display the image
     imshow(img);
     % Prompt the user to select two points to define the rotation angle
@@ -33,15 +36,6 @@ function batch_rotate_images_manual(folder_path)
 	crop_rotatedLeafBw = imcrop(rotatedLeafBw, [newX, newY, newWidth, newHeight]);
     % Save the rotated image
     imwrite(crop_rotatedLeafBw, fullfile(folder_path, ['rotated_', image_files(i).name]));
-    
-    [rows, cols] = find(crop_rotatedLeafBw, 1);
-	startPoint = [rows(1), cols(1)];
-	% Trace boundary clockwise
-	boundary = bwtraceboundary(crop_rotatedLeafBw, startPoint, 'n');
-	fileID = fopen(fullfile(folder_path, [image_files(i).name,'_outline.tsv']),'w');
-	dlmwrite(fullfile(folder_path, [image_files(i).name,'_outline.tsv']), boundary, 'delimiter', '\t');
-	% Close file
-	fclose(fileID);
 	
     % Close the current figure
     close;

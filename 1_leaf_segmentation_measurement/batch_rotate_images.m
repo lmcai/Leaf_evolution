@@ -12,13 +12,16 @@ for i = 1:length(image_files)
     if ndims(img) == 3
     	img=rgb2gray(img);
     	img=imbinarize(img);
-    	img=imfill(img,"holes");
+    	img = imfill(img,"holes");
     	img=bwareafilt(img,1);
     else
     	if isa(img, 'uint8')
     		img=imbinarize(img);
-    		img=imfill(img,"holes");
+    		img = imfill(img,"holes");
     		img=bwareafilt(img,1);
+   		else
+   			img = imfill(img,"holes");
+   			img=bwareafilt(img,1);
    		end
     end
 	% rotate img
@@ -40,16 +43,10 @@ for i = 1:length(image_files)
 	
 	% Crop binary image
 	crop_rotatedLeafBw = imcrop(rotatedLeafBw, [newX, newY, newWidth, newHeight]);
-
+	
+	%smooth outline using gaussian filter
+	gaussianFilter = fspecial('gaussian', [5 5], 1);
+	crop_rotatedLeafBw = imfilter(crop_rotatedLeafBw, gaussianFilter);
 	imwrite(crop_rotatedLeafBw, fullfile(folder_path, ['rotated_', image_files(i).name]));
 	
-	% output outline coordinates for EFD analysis
-	[rows, cols] = find(crop_rotatedLeafBw, 1);
-	startPoint = [rows(1), cols(1)];
-	% Trace boundary clockwise
-	boundary = bwtraceboundary(crop_rotatedLeafBw, startPoint, 'n');
-	fileID = fopen(fullfile(folder_path, [image_files(i).name,'_outline.tsv']),'w');
-	dlmwrite(fullfile(folder_path, [image_files(i).name,'_outline.tsv']), boundary, 'delimiter', '\t');
-	% Close file
-	fclose(fileID);
 end
