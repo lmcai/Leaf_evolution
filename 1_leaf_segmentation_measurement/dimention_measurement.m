@@ -1,8 +1,9 @@
-function [width width_bbx length total_area]=dimention_measurement(im)
+function [width width_bbx length_linear length_bbx total_area solidity circularity]=dimention_measurement(im)
 	stats = regionprops(im, 'BoundingBox');
 	width = get_width(im);
+	length_linear = linear_leaf_len(im);
 	width_bbx = stats(1).BoundingBox(3);
-	length = stats(1).BoundingBox(4);
+	length_bbx = stats(1).BoundingBox(4);
 	% Calculate the connected components in the binary image
 	cc = bwconncomp(im);
 	% Calculate the region properties for each connected component
@@ -10,6 +11,19 @@ function [width width_bbx length total_area]=dimention_measurement(im)
 	% Compute the total area of all objects in the image
 	total_area = sum([props.Area]);
 		
+	%solidity=area/convex_hull
+	convexHull = bwconvhull(im);
+	% Compute area of convex hull
+	cvHull_props = regionprops(convexHull, 'Area');
+	cvHull_Area = cvHull_props.Area;
+	solidity = total_area/cvHull_Area
+	
+	% circularity = 4 * pi * area/parimeter^2
+	perimeter = bwperim(im);
+	% Count number of perimeter pixels
+	numPerimeterPixels = sum(perimeter(:));
+	circularity = (4 * 3.1416 * total_area)/(numPerimeterPixels * numPerimeterPixels)
+	
 	%LeafBwStats = regionprops(rotatedLeafBw,'all');
 	%[RDMX,RDMY,RCMX,RCMY,RDNX,RDNY,RCNX,RCNY] = CalcAxis(LeafBwStats);
 	%tabledatarotated = regionprops('Table',rotatedLeafBw, 'Centroid',...
