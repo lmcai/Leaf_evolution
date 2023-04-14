@@ -27,7 +27,13 @@ for i = 1:numel(image_files)
 	imwrite(rotated_img,fullfile(folder_path, image_files(i).name))
 ```
 
-4. Once satisfied with the orientation of the leaf images, measure the dimension of the leaves with the following code. This should 
+4. Once satisfied with the orientation of the leaf images, measure the dimension of the leaves and generate a coordinate file per image. Leaf measurements include the following five metrics: 
+Area = total leaf area in pixel
+Length = vertital axis length in pixel
+Aspect ratio = width/length
+Solidity = area/convex_hull
+Circularity = 4 * pi * area/parimeter^2
+
 ```
 image_files = dir(fullfile(folder_path, 'rotate*.png'));
 leaf_dim = ["ID" "width" "width_bbx" "length" "area"];
@@ -42,6 +48,7 @@ end
 filename = 'leaf_dimention.csv';
 writematrix(leaf_dim, filename);
 ```
+
 # III. Fractal dimension as a measurement of leaf dissection
 
 Use the function `fractal_dimension` to calculate a value for each individual leaf image.
