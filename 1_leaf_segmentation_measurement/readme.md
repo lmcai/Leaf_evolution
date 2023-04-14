@@ -13,11 +13,11 @@ If using stained leaves, use `cleared_leaf_image_segmentation.m` to convert imag
 
 1. Place all images in a folder and call the function `batch_rotate_images(folder_path)` to rotate image. This function will write a rotated image `rotated_*` to the folder 
 
-2. Manual inspect the rotated leaves, heart shaped can be tricky. Place these leaves need to be manually rotated in one folder and use `batch_rotate_images_manual(folder_path)` 
+2. Manual inspect the rotated leaves, heart shaped leaves can be tricky. Place these leaves need to be manually rotated in one folder and use `batch_rotate_images_manual(folder_path)` 
 
-This should generate a png file `rotated_*.png` where the main axis is placed vertically
+This should generate a png file `rotated_*.png` where the main axis is placed vertically.
 
-3. Some images are upside down, they need to be manually sorted into one folder and use the following script to rotate the image.
+3. Some images are upside down, they need to be manually sorted into one folder and use the following script to rotate the image for 180 degree.
 ```
 image_files = dir(fullfile(folder_path, 'rotate*.png'));
 for i = 1:numel(image_files)
