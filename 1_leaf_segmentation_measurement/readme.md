@@ -13,13 +13,23 @@ If using stained leaves, use `cleared_leaf_image_segmentation.m` to convert imag
 
 1. Place all images in a folder and call the function `batch_rotate_images(folder_path)` to rotate image. This function will write a rotated image `rotated_*` to the folder 
 
-This should generate two output files per input image: 1) one png file `rotated_*.png` where the main axis is placed vertically; 2) one `*.tsv` file for the outline coordinates.
+This should generate one png file `rotated_*.png` per image where the main axis is placed vertically.
 
 2. Manual inspect the rotated leaves, heart shaped can be tricky. Place these leaves need to be manually rotated in one folder and use `batch_rotate_images_manual(folder_path)` 
 
-This should generate two output files per input image: 1) one png file `rotated_*.png` where the main axis is placed vertically; 2) one `*.tsv` file for the outline coordinates.
+This should generate a png file `rotated_*.png` where the main axis is placed vertically
 
-3. Measure the dimension of the leaves
+3. Some images are upside down, they need to be manually sorted into one folder and use the following script to rotate the image.
+```
+image_files = dir(fullfile(folder_path, 'rotate*.png'));
+for i = 1:numel(image_files)
+	img = imread(fullfile(folder_path, image_files(i).name));
+	% Rotate the image 180 degrees
+	rotated_img = imrotate(img, 180, 'bilinear');
+	imwrite(rotated_img,fullfile(folder_path, image_files(i).name))
+```
+
+4. Once satisfied with the orientation of the leaf images, measure the dimension of the leaves with the following code. This should 
 ```
 image_files = dir(fullfile(folder_path, 'rotate*.png'));
 leaf_dim = ["ID" "width" "width_bbx" "length" "area"];
@@ -53,80 +63,5 @@ writematrix(leaf_fd, filename);
 
 # IV. EFD analysis
 EFD_main.m to get EFD coefficient for PCA analysis.                            
-                            
-# IV. Mean EFD outline for PCA
-                            
-==================================================
-Below is the readme file from the original contributor who wrote the EFD analysis                            
-                            Auralius Manurung
-                           auralius@lavabit.com
 
-1) plot_chain_code(ai, color, line_width)
------------------------------------------
-This function will plot the given chain code. The chain code (ai) should be in 
-column vector.
-Example:
->> ai = [5 4 1 2 3 4 3 0 0 1 0 1 0 0 0 7 7 1 1 0 7 5 4 5 4 5 0 6 5 4 1 3 4 4 ...
-         4 4 6];
->> plot (ai)
-
-
-2) plot_fourier_approx(ai, n, m, normalized, color, line_width)
----------------------------------------------------------------
-This function will plot the fourier approximation, given a chain code (ai), 
-number of harmonic elements (n), and number of points for reconstruction (m). 
-Normalization can be applied by setting "normalized = 1".
-
-
-3) output = calc_traversal_dist(ai, n, m, normalized)
-------------------------------------------------
-This function will generate position coordinates of chain code (ai). Number of 
-harmonic elements (n), and number of points for reconstruction (m) must be 
-specified.  
-The output is a matrix of [x1, y1; x2, y2; ...; xm, ym].
-
-
-3) output = fourier_approx(ai, n, m, normalized)
-------------------------------------------------
-This function will generate position coordinates of fourier approximation of 
-chain code (ai).Number of harmonic elements (n), and number of points for 
-reconstruction (m) must be specified.
-The output is a matrix of [x1, y1; x2, y2; ...; xm, ym].
-
-
-4) output = calc_harmonic_coefficients(ai, n)
----------------------------------------------
-This function will calculate the n-th set of four harmonic coefficients.
-The output is [an bn cn dn]
-
-
-5) [A0, C0] = calc_dc_components(ai)
-------------------------------------
-Ths function will calculate the bias coefficients A0 and C0.
-A0 and C0 are bias coefficeis, corresponding to a frequency of zero.
-
-
-6) output = calc_traversal_dist(ai)
------------------------------------
-Traversal distance is defined as accumulated distance travelled by every 
-component of the chain code assuming [0 0] is the starting position.
-Example:
->> x = calc_traversal_dist([1 2 3])
-x = 
-    1  1
-    1  2
-    0  3
-
-
-7) output = calc_traversal_time(ai)
------------------------------------
-Traversal time is defined as accumulated time consumed by every 
-component of the chain code.
-Example:
->> x = calc_traversal_time([1 2 3])
-x =
-
-   1.4142
-   2.4142
-   3.8284
 
