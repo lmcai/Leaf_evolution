@@ -28,10 +28,15 @@ for i = 1:numel(image_files)
 ```
 
 4. Once satisfied with the orientation of the leaf images, measure the dimension of the leaves and generate a coordinate file per image. Leaf measurements include the following five metrics: 
+
 Area = total leaf area in pixel
+
 Length = vertital axis length in pixel
+
 Aspect ratio = width/length
+
 Solidity = area/convex_hull
+
 Circularity = 4 * pi * area/parimeter^2
 
 ```
