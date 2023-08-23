@@ -8,23 +8,8 @@ format long g;
 format compact;
 fontSize = 22;
 
-%place high contrast leaf images in a folder and process using the rgb2bw_easy function
-%set working directory
-work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/030423/'
-img_files=dir(join([work_dir,'*.JPG'],""));
-img_files={img_files.name};
-	
-% work with high contrast
-for i = 1:length(img_files)
-	raw=imread(join([work_dir,string(img_files(i))],""));
-	file_name=split(string(img_files(i)),'.JP');
-	file_name=string(file_name(1))
-	msk=rgb2bw_easy(raw);
-	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
-end
-
-
-%place low contrast leaf images in a folder and process using the rgb2bw_lowcontrast function
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%place leaf images in a folder and process using the rgb2bw_lowcontrast function
 %set working directory
 work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/022322/'
 img_files=dir(join([work_dir,'*.JPG'],""));
@@ -38,8 +23,23 @@ for i = 1:length(img_files)
 	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%For dissected leaves with potentially overlapping parts, skip the 'hole filling' step and use the rgb2bw_lowcontrast function
+%set working directory
+work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/022322/'
+img_files=dir(join([work_dir,'*.JPG'],""));
+img_files={img_files.name};
+	
+for i = 1:length(img_files)
+	raw=imread(join([work_dir,string(img_files(i))],""));
+	file_name=split(string(img_files(i)),'.JP');
+	file_name=string(file_name(1))
+	msk=rgb2bw_lowcontrast(raw);
+	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
+end
 
-% for image taken with Canon EOS, it needs to be exported to tiff first,
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% for smaller leaves whose images are taken with Canon EOS, they needs to be exported to tiff first,
 % then croped
 
 work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/022322/'
@@ -70,7 +70,7 @@ for i = 1:length(img_files)
 	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
 end
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % for image taken with Nikon imaging center, use edge detection instead
 work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/Nikon_imagingcenter/'
 img_files=dir(join([work_dir,'*.tif'],""));
@@ -88,4 +88,23 @@ for i = 1:length(img_files)
 	file_name=split(string(img_files(i)),'.')
 	file_name=string(file_name(1))
 	imwrite(filledMask,join([work_dir,file_name,'.bw.png'],""))
+end
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%MISC
+%place high contrast leaf images in a folder and process using the rgb2bw_easy function
+%set working directory
+work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/030423/'
+img_files=dir(join([work_dir,'*.JPG'],""));
+img_files={img_files.name};
+	
+% work with high contrast
+for i = 1:length(img_files)
+	raw=imread(join([work_dir,string(img_files(i))],""));
+	file_name=split(string(img_files(i)),'.JP');
+	file_name=string(file_name(1))
+	msk=rgb2bw_easy(raw);
+	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
 end
