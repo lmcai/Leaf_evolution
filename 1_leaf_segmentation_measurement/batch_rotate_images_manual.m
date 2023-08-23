@@ -8,7 +8,12 @@ function batch_rotate_images_manual(folder_path)
     
     % Read in the image
     img = imread(fullfile(folder_path, image_files(i).name));
+    if ndims(img)==3
+    	img = rgb2gray(img);
+    	img = imbinarize(img);
+    end
     img = imfill(img,"holes");
+    img = bwareafilt(img, 1);
     gaussianFilter = fspecial('gaussian', [5 5], 1);
 	img = imfilter(img, gaussianFilter);
 	% Display the image
