@@ -24,7 +24,7 @@ for i = 1:length(img_files)
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%For dissected leaves with potentially overlapping parts, skip the 'hole filling' step and use the rgb2bw_lowcontrast function
+%For dissected leaves with potentially overlapping parts, skip the 'hole filling' step and use the rgb2bw_dissectedleaf function
 %set working directory
 work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/022322/'
 img_files=dir(join([work_dir,'*.JPG'],""));
