@@ -9,16 +9,16 @@ function BW = rgb2bw_lowcontrast(img)
 	mask = imbinarize(grayImg);
 	% Fill holes in the mask
 	mask = ~mask;
-	mask = imclearborder(mask);
-	filledMask = imfill(mask, 'holes');
-	SE = strel("disk",5);
+	filledMask = imclearborder(mask);
+	%filledMask = imfill(mask, 'holes');
+	SE = strel("disk",4);
 	filledMask = imclose(filledMask,SE);
 	%remove small objects and touching boarder
 	filledMask = imclearborder(filledMask);
 	filledMask=bwareaopen(filledMask, 10000);
 	% Retain only one biggest object from the mask
 	BW = bwareafilt(filledMask, 1);
-	BW = imfill(BW, 'holes');
+	%BW = imfill(BW, 'holes');
 	%remove marginal hair or other artifacts
 	BW = ~BW;
 	BW = imclose(BW,SE);

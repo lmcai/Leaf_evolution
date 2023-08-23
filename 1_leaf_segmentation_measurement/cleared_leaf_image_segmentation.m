@@ -26,7 +26,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %For dissected leaves with potentially overlapping parts, skip the 'hole filling' step and use the rgb2bw_dissectedleaf function
 %set working directory
-work_dir = '/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/leaf_shape/022322/'
+work_dir = '/Users/lcai/Downloads/temp/'
 img_files=dir(join([work_dir,'*.JPG'],""));
 img_files={img_files.name};
 	
@@ -34,7 +34,7 @@ for i = 1:length(img_files)
 	raw=imread(join([work_dir,string(img_files(i))],""));
 	file_name=split(string(img_files(i)),'.JP');
 	file_name=string(file_name(1))
-	msk=rgb2bw_lowcontrast(raw);
+	msk=rgb2bw_dissectedleaf(raw);
 	imwrite(msk,join([work_dir,file_name,'.bw.png'],""))
 end
 

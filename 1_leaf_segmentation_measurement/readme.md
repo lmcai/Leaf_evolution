@@ -17,7 +17,9 @@ If using stained leaves, use `cleared_leaf_image_segmentation.m` to convert imag
 
 This should generate a png file `rotated_*.png` where the main axis is placed vertically.
 
-3. Some images are upside down, they need to be manually sorted into one folder and use the following script to rotate the image for 180 degree.
+3. For dissected leaves, use the function `batch_rotate_dissected_leaf(folder_path)`, which will not fill holes
+
+4. Some images are upside down, they need to be manually sorted into one folder and use the following script to rotate the image for 180 degree.
 ```
 image_files = dir(fullfile(folder_path, 'rotate*.png'));
 for i = 1:numel(image_files)
