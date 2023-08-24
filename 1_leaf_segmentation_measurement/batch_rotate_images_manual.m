@@ -17,9 +17,11 @@ function batch_rotate_images_manual(folder_path)
     gaussianFilter = fspecial('gaussian', [5 5], 1);
 	img = imfilter(img, gaussianFilter);
 	% Display the image
+    figure;
     imshow(img);
     % Prompt the user to select two points to define the rotation angle
-    disp(['Image ', num2str(i), ': Select two points to define the rotation angle']);
+    title(['Image ', image_files(i).name, ': Select two points to define the rotation angle']);
+    hold on;
     [x,y] = ginput(2);
     % Compute the angle of rotation
     angle = atan2(y(2) - y(1), x(2) - x(1)) * 180 / pi - 90;
