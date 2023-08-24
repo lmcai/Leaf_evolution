@@ -6,7 +6,7 @@ image_files = dir(fullfile(folder_path, '*.png'));
 %leaf_dim = ["ID" "width" "length" "area"];
 % Loop through all image files
 for i = 1:length(image_files)
-    
+    image_files(i).name
     % Read in the image
     img = imread(fullfile(folder_path, image_files(i).name));
     if ndims(img) == 3
