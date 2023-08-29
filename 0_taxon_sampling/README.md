@@ -1,1 +1,1 @@
-test test
+Scripts written by AB to curate the taxon sampling spreadsheet
