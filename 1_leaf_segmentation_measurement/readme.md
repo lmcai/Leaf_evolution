@@ -34,8 +34,10 @@ for i = 1:numel(image_files)
 ```
 Area = total leaf area in pixel
 Length = vertital axis length in pixel
+Width = horizontal axis length in pixel
 Aspect ratio = width/length
 Solidity = area/convex_hull
+Ellipticalness Index = 4 * Area / (π * L * W)
 Circularity = 4 * pi * area/parimeter^2
 ```
 The outline coordinate `*.tsv` file is a list of x and y coordinates of the outline of the leaf. They can be used by Momocs (R package) for EFD analysis.

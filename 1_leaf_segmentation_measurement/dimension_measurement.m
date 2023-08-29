@@ -1,7 +1,7 @@
-function [width width_bbx length_linear length_bbx total_area solidity circularity]=dimention_measurement(im)
+function [width width_bbx length_bbx total_area solidity circularity EI]=dimension_measurement(im)
 	stats = regionprops(im, 'BoundingBox');
 	width = get_width(im);
-	length_linear = linear_leaf_len(im);
+	%length_linear = linear_leaf_len(im);
 	width_bbx = stats(1).BoundingBox(3);
 	length_bbx = stats(1).BoundingBox(4);
 	% Calculate the connected components in the binary image
@@ -18,11 +18,17 @@ function [width width_bbx length_linear length_bbx total_area solidity circulari
 	cvHull_Area = cvHull_props.Area;
 	solidity = total_area/cvHull_Area
 	
-	% circularity = 4 * pi * area/parimeter^2
-	perimeter = bwperim(im);
+	% RETIRED metric!!! circularity = 4 * pi * area/parimeter^2
+	% Use the built-in circularity function of the image processing toolbox
+	%smooth out the boundaries first using EFD 
+	%perimeter = bwperim(im);
 	% Count number of perimeter pixels
-	numPerimeterPixels = sum(perimeter(:));
-	circularity = (4 * 3.1416 * total_area)/(numPerimeterPixels * numPerimeterPixels)
+	%numPerimeterPixels = sum(perimeter(:));
+	%circularity = (4 * 3.1416 * total_area)/(numPerimeterPixels * numPerimeterPixels)
+	circularity = regionprops("table",im,"Circularity")
+	
+	%EI = 4 A/(πLW)
+	EI = (4*total_area)/(3.1416*length_bbx*width)
 	
 	%LeafBwStats = regionprops(rotatedLeafBw,'all');
 	%[RDMX,RDMY,RCMX,RCMY,RDNX,RDNY,RCNX,RCNY] = CalcAxis(LeafBwStats);
