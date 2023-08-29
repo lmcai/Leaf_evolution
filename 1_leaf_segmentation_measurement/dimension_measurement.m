@@ -18,9 +18,8 @@ function [width width_bbx length_bbx total_area solidity circularity EI]=dimensi
 	cvHull_Area = cvHull_props.Area;
 	solidity = total_area/cvHull_Area;
 	
-	% RETIRED metric!!! circularity = 4 * pi * area/parimeter^2
+	% circularity = 4 * pi * area/parimeter^2
 	% Use the built-in circularity function of the image processing toolbox
-	%smooth out the boundaries first using EFD 
 	%perimeter = bwperim(im);
 	% Count number of perimeter pixels
 	%numPerimeterPixels = sum(perimeter(:));
@@ -28,6 +27,12 @@ function [width width_bbx length_bbx total_area solidity circularity EI]=dimensi
 	circularity = regionprops(im,"Circularity");
 	circularity = circularity.Circularity;
 	
+	perimpix = abs(conv2(im,[1 -1],'same')) | abs(conv2(im,[1;-1],'same'));
+	[Ip,Jp] = find(perimpix);
+	% use a convexhull to generate a polygonal perimeter
+	edgelist = convhull(Ip,Jp);
+	polyperim = sum(sqrt(diff(Ip(edgelist)).^2 + diff(Jp(edgelist)).^2));
+	circularity = 4*pi*sum(im(:))/polyperim.^2;
 	%See also https://www.mathworks.com/matlabcentral/answers/442374-how-to-detect-circularity-more-accurately-than-4-pi-a-p-2#answer_1198565
 	
 	%EI = 4 A/(πLW)
