@@ -16,7 +16,7 @@ function [width width_bbx length_bbx total_area solidity circularity EI]=dimensi
 	% Compute area of convex hull
 	cvHull_props = regionprops(convexHull, 'Area');
 	cvHull_Area = cvHull_props.Area;
-	solidity = total_area/cvHull_Area
+	solidity = total_area/cvHull_Area;
 	
 	% RETIRED metric!!! circularity = 4 * pi * area/parimeter^2
 	% Use the built-in circularity function of the image processing toolbox
@@ -25,10 +25,10 @@ function [width width_bbx length_bbx total_area solidity circularity EI]=dimensi
 	% Count number of perimeter pixels
 	%numPerimeterPixels = sum(perimeter(:));
 	%circularity = (4 * 3.1416 * total_area)/(numPerimeterPixels * numPerimeterPixels)
-	circularity = regionprops("table",im,"Circularity")
+	circularity = regionprops("table",im,"Circularity");
 	
 	%EI = 4 A/(πLW)
-	EI = (4*total_area)/(3.1416*length_bbx*width)
+	EI = (4*total_area)/(3.1416*length_bbx*width);
 	
 	%LeafBwStats = regionprops(rotatedLeafBw,'all');
 	%[RDMX,RDMY,RCMX,RCMY,RDNX,RDNY,RCNX,RCNY] = CalcAxis(LeafBwStats);
