@@ -25,7 +25,10 @@ function [width width_bbx length_bbx total_area solidity circularity EI]=dimensi
 	% Count number of perimeter pixels
 	%numPerimeterPixels = sum(perimeter(:));
 	%circularity = (4 * pi * total_area)/(numPerimeterPixels * numPerimeterPixels)
-	circularity = regionprops("table",im,"Circularity");
+	circularity = regionprops(im,"Circularity");
+	circularity = circularity.Circularity;
+	
+	%See also https://www.mathworks.com/matlabcentral/answers/442374-how-to-detect-circularity-more-accurately-than-4-pi-a-p-2#answer_1198565
 	
 	%EI = 4 A/(πLW)
 	EI = (4*total_area)/(pi*length_bbx*width);

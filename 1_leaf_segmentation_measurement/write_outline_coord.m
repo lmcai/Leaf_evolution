@@ -3,6 +3,6 @@ function boundary=write_outline_coord(img)
 	[rows, cols] = find(img, 1);
 	startPoint = [rows(1), cols(1)];
 	% Trace boundary clockwise
-	boundary = bwtraceboundary(crop_rotatedLeafBw, startPoint, 'n');
+	boundary = bwtraceboundary(img, startPoint, 'n');
 
 	
