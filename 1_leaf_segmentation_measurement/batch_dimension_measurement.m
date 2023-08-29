@@ -9,9 +9,10 @@ for i = 1:numel(image_files)
     	img = imbinarize(img);
     	img = imfill(img,'holes');
     	img = bwareafilt(img,1);
+    end
     %measure dimensions
-	[width width_bbx len area]=dimention_measurement(img);
-	new_row = [string(image_files(i).name) string(width) string(width_bbx) string(len) string(area)]
+	[width width_bbx len_bbx area solidity circularity EI]=dimension_measurement(img);
+	new_row = [string(image_files(i).name) string(width) string(width_bbx) string(len_bbx) string(area) string(solidity) string(circularity) string(EI)]
 	leaf_dim = vertcat(leaf_dim, new_row)
 	
 	%write coordinates
