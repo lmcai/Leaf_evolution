@@ -24,11 +24,11 @@ function [width width_bbx length_bbx total_area solidity circularity EI]=dimensi
 	%perimeter = bwperim(im);
 	% Count number of perimeter pixels
 	%numPerimeterPixels = sum(perimeter(:));
-	%circularity = (4 * 3.1416 * total_area)/(numPerimeterPixels * numPerimeterPixels)
+	%circularity = (4 * pi * total_area)/(numPerimeterPixels * numPerimeterPixels)
 	circularity = regionprops("table",im,"Circularity");
 	
 	%EI = 4 A/(πLW)
-	EI = (4*total_area)/(3.1416*length_bbx*width);
+	EI = (4*total_area)/(pi*length_bbx*width);
 	
 	%LeafBwStats = regionprops(rotatedLeafBw,'all');
 	%[RDMX,RDMY,RCMX,RCMY,RDNX,RDNY,RCNX,RCNY] = CalcAxis(LeafBwStats);
