@@ -23,5 +23,5 @@ for i = 1:numel(image_files)
 end
 
 %output measurements to csv
-filename = 'leaf_dimention.csv';
+filename = 'leaf_dimension.csv';
 writematrix(leaf_dim, filename);

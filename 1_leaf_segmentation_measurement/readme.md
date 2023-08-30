@@ -29,7 +29,9 @@ for i = 1:numel(image_files)
 	imwrite(rotated_img,fullfile(folder_path, image_files(i).name))
 ```
 
-4. Once satisfied with the orientation of the leaf images, place them in one folder. Then measure the dimension of the leaves and generate a coordinate file per image. Leaf measurements include the following five metrics: 
+4. Once satisfied with the orientation of the leaf images, place them in one folder. Then measure the dimension of the leaves using the command `batch_dimension_measurement('folder_name')`.
+
+This will generate a 'leaf_dimension' file with the following five metrics: 
 
 ```
 Area = total leaf area in pixel
@@ -41,29 +43,6 @@ Ellipticalness Index = 4 * Area / (π * L * W)
 Circularity = 4 * pi * area/parimeter^2
 ```
 The outline coordinate `*.tsv` file is a list of x and y coordinates of the outline of the leaf. They can be used by Momocs (R package) for EFD analysis.
-
-Run the following command to get these outputs.
-```
-image_files = dir(fullfile(folder_path, 'rotate*.png'));
-leaf_dim = ["ID" "width" "width_bbx" "length" "area"];
-for i = 1:numel(image_files)
-    img = imread(fullfile(folder_path, image_files(i).name));
-    %measure dimensions
-	[width width_bbx len area]=dimention_measurement(img);
-	new_row = [string(image_files(i).name) string(width) string(width_bbx) string(len) string(area)]
-	leaf_dim = vertcat(leaf_dim, new_row)
-	
-	%write coordinates
-	coords=write_outline_coord(img);
-	fileID = fopen(fullfile(folder_path, [image_files(i).name,'_outline.tsv']),'w');
-	dlmwrite(fullfile(folder_path, [image_files(i).name,'_outline.tsv']), coords, 'delimiter', '\t');
-	fclose(fileID);
-end
-
-%output measurements to csv
-filename = 'leaf_dimention.csv';
-writematrix(leaf_dim, filename);
-```
 
 # III. Fractal dimension as a measurement of leaf dissection
 
