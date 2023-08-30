@@ -24,8 +24,8 @@ function [width width_bbx length_bbx total_area solidity circularity EI]=dimensi
 	% Count number of perimeter pixels
 	%numPerimeterPixels = sum(perimeter(:));
 	%circularity = (4 * pi * total_area)/(numPerimeterPixels * numPerimeterPixels)
-	circularity = regionprops(im,"Circularity");
-	circularity = circularity.Circularity;
+	%circularity = regionprops(im,"Circularity");
+	%circularity = circularity.Circularity;
 	
 	perimpix = abs(conv2(im,[1 -1],'same')) | abs(conv2(im,[1;-1],'same'));
 	[Ip,Jp] = find(perimpix);
