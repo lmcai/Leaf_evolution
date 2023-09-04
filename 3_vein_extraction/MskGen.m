@@ -17,16 +17,9 @@ function msk = MskGen(img)
 	msk=~msk;
 	msk = imfill(msk, 'holes');
 	msk = bwareafilt(msk, 1);
-
-	%alternative: blur the image, but corners and borders have artificial pixels
-	%windowSize = 51;
-	%kernel = ones(windowSize) / windowSize ^ 2;
-	%msk_blurry = conv2(single(msk), kernel, 'same');
-	%msk_blurry = msk_blurry > 0.5;
-	%msk=imcomplement(msk_blurry);
 end
 
-function Loop_among_files()
+function Loop_among_files(dir_name)
 	clc;    % Clear the command window.
 	close all;  % Close all figures (except those of imtool.)
 	clear;  % Erase all existing variables. Or clearvars if you want.
@@ -35,15 +28,15 @@ function Loop_among_files()
 	format compact;
 	fontSize = 22;
 	
-	img_files=dir('~/Downloads/Orobanchaceae_venation/Raw_TIF/*.tif');
+	img_files=dir(dir_name);
 	img_files={img_files.name};
 	for i = 1:length(img_files)
-		raw=imread(join(['~/Downloads/Orobanchaceae_venation/Raw_TIF/',string(img_files(i))],""));
+		raw=imread(join([dir_name,string(img_files(i))],""));
 		file_name=split(string(img_files(i)),'.')
 		file_name=string(file_name(1))
 		msk=MskGen(raw);
-		imwrite(msk,join(['~/Downloads/Orobanchaceae_venation/',file_name,'_mask.png'],""))
-		imwrite(raw,join(['~/Downloads/Orobanchaceae_venation/',file_name,'.png'],""))
+		imwrite(msk,join([dir_name,file_name,'_mask.png'],""))
+		imwrite(raw,join([dir_name,file_name,'.png'],""))
 		output=1
 	end
 end
