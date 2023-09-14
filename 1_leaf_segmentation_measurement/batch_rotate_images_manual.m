@@ -7,10 +7,14 @@ function batch_rotate_images_manual(folder_path)
 	for i = 1:length(image_files)
     
     % Read in the image
+    %image_files(i).name
     img = imread(fullfile(folder_path, image_files(i).name));
     if ndims(img)==3
     	img = rgb2gray(img);
     	img = imbinarize(img);
+    end
+    if isa(img, 'uint8')
+    	img=imbinarize(img);
     end
     img = imfill(img,"holes");
     img = bwareafilt(img, 1);

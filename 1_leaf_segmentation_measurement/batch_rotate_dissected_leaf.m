@@ -8,6 +8,9 @@ function batch_rotate_images_manual(folder_path)
     
     % Read in the image
     img = imread(fullfile(folder_path, image_files(i).name));
+    if isa(img, 'uint8')
+    	img=imbinarize(img);
+    end
     if ndims(img)==3
     	img = rgb2gray(img);
     	img = imbinarize(img);
