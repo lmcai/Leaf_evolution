@@ -1,7 +1,7 @@
 function [] = batchleaf_grayscale(directory, extension)
-    claheRadius = 400; % local radius (pixels) for contrast-limited adaptive histogram equalization (CLAHE)
+    claheRadius = 50; % local radius (pixels) for contrast-limited adaptive histogram equalization (CLAHE)
     gain = 0.01; % contrast enhancement (from 0 to 1)
-    channel = 2; % grayscale convert using red(1), green(2), or blue(3) channel of image
+    channel = 1; % grayscale convert using red(1), green(2), or blue(3) channel of image
    
     
     
