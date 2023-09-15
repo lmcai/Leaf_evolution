@@ -2,15 +2,19 @@ function batch_rotate_images_manual(folder_path)
 % Batch rotate images in a folder based on user-defined vertical direction
 
 % List all image files in the folder
-	image_files = dir(fullfile(folder_path, '*.png'));
+	image_files = dir(fullfile(folder_path, '*.bw.png'));
 	% Loop through all image files
 	for i = 1:length(image_files)
     
     % Read in the image
+    %image_files(i).name
     img = imread(fullfile(folder_path, image_files(i).name));
     if ndims(img)==3
     	img = rgb2gray(img);
     	img = imbinarize(img);
+    end
+    if isa(img, 'uint8')
+    	img=imbinarize(img);
     end
     img = imfill(img,"holes");
     img = bwareafilt(img, 1);
