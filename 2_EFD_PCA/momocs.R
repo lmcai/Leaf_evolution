@@ -50,6 +50,18 @@ methods(class='Out') # same for Opn and Ldk
 #Visualize EFD process
 coo_oscillo(all_leaves[1], "efourier")
 
+
+#determine the best number of harmonics
+#1. through shape reconstruction, eye ball the smallest good number
+hqual(bot, method = "eFourier", id = 16, harm.range = 1:49, palette = col.sari, plot.method = "panel")
+
+#2. calculate deviations
+#euclidean distances obtained with a lower number of harmonics for every point of this outline and the best possible outline with these sampled points
+hquant(bot, harm.range = c(12, 16, 20, 24, 32))
+
+#3. Through harmonic power
+hpow(bot)
+
 #apply EFD to all leaves, choose a number of harmonics to use
 all_leaves.f <- efourier(all_leaves, nb.h=10)
 
