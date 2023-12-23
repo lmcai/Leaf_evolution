@@ -1,72 +1,76 @@
-library(momocs)
-x=read.table('~/Documents/GitHub/Leaf_evolution/1_EFD/toy/test.txt')
+library(Momocs)
+################################
+#1. Load data
+##Read in leaf coordinates
+x=read.table('/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/1_leaf_shape/022323/rotated_S30_1_59.91ppm.bw.png_outline.tsv')
 x=as.matrix(x)
-y=read.table('~/Documents/GitHub/Leaf_evolution/1_EFD/toy/S30_2_59.91ppm.bw.png_outline.tsv')
+y=read.table('/Users/lcai/Downloads/Orobanchaceae_leaf_architecture/1_leaf_shape/022323/rotated_S48_1_59.91ppm.bw.png_outline.tsv')
 y=as.matrix(y)
-test=list(sp1=x,sp2=y)
-a=Out(test)
+coo=list(sp1=x,sp2=y)
 
-## Not run: 
+# Add a $fac from scratch
+fac <- data.frame(species=letters[1:5], type=c(5:1))
+
+# Then you have to define the subclass using the right builder
+# here we have outlines, so we use Out
+all_leaves <- Out(coo, fac)
+
+#################################
+#2. examine your data
+
+##Take a look by plotting
+panel(all_leaves)
+stack(all_leaves)
+plot(all_leaves)
+
+#scale and center
+all_leaves %>% coo_scale %>% coo_center %>% stack()
+#add auto align
+all_leaves %>% coo_scale %>% coo_center %>% coo_alignxax() %>% coo_slidedirection("up") %>% stack()
+
+
+#basic statistics
+# access the different components
+# $coo coordinates
+head(all_leaves$coo)
+# $fac grouping factors
+head(all_leaves$fac)
+# table summary
+table(bot$fac)
+
 # to see all methods for Coo objects.
 methods(class='Coo')
 
 # to see all methods for Out objects.
 methods(class='Out') # same for Opn and Ldk
 
-# Let's take an Out example. But all methods shown here
-# work on Ldk (try on 'wings') and on Opn ('olea')
-bot
+###################################
+#3. Morphometrics
 
-# Primarily a 'Coo' object, but also an 'Out'
-class(bot)
-inherits(bot, "Coo")
-panel(bot)
-stack(bot)
-plot(bot)
+#Visualize EFD process
+coo_oscillo(all_leaves[1], "efourier")
 
-# Getters (you can also use it to set data)
-bot[1] %>% coo_plot()
-bot[1:5] %>% str()
+#apply EFD to all leaves, choose a number of harmonics to use
+all_leaves.f <- efourier(all_leaves, nb.h=10)
 
-# Setters
-bot[1] <- shapes[4]
-panel(bot)
+#now all_leaves.f is a Coe object
+#check the distribution of coefficients
+boxplot(all_leaves.f, drop=1)
 
-bot[1:5] <- shapes[4:8]
-panel(bot)
+#calculate a PCA on the Coe object and plot it, along with morphospaces, calculated on the fly.
+all_leaves.p <- PCA(all_leaves.f)
+plot_PCA(all_leaves.p, ~type)
 
-# access the different components
-# $coo coordinates
-head(bot$coo)
-# $fac grouping factors
-head(bot$fac)
-# or if you know the name of the column of interest
-bot$type
-# table
-table(bot$fac)
-# an internal view of an Out object
-str(bot)
-
-# subsetting
-# see ?filter, ?select, and their 'see also' section for the
-# complete list of dplyr-like verbs implemented in Momocs
-
-length(bot) # the number of shapes
-names(bot) # access all individual names
-bot2 <- bot
-names(bot2) <- paste0('newnames', 1:length(bot2)) # define new names
-
-# Add a $fac from scratch
-coo <- bot[1:5] # a list of five matrices
-length(coo)
-sapply(coo, class)
-
-fac <- data.frame(name=letters[1:5], value=c(5:1))
-# Then you have to define the subclass using the right builder
-# here we have outlines, so we use Out
-x <- Out(coo, fac)
-x$coo
-x$fac
+#all in one
+all_leaves %>% efourier(nb.h=10) %>% PCA %>% plot(~domes+var)
 
 
-## End(Not run)
+###################################
+#Traditional morphometrics based on size circulatiry, etc
+ht <- measure(hearts, coo_area, coo_circularity, d(1, 3))
+class(ht)
+ht$coe
+ht %>% PCA() %>% plot_PCA(~aut)
+
+
+
