@@ -6,8 +6,10 @@ library(rgbif)
 library(sp)
 
 clean_records <-function(sp){
-	system('head -1 orobanchaceae_coordinates.GBIF.sp_filtered.tsv >temp.tsv')
-	system(paste('grep \"',sp,'\" orobanchaceae_coordinates.GBIF.sp_filtered.tsv >>temp.tsv',sep=''), intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE,timeout = 0)
+	system('head -1 orobanchaceae_coordinates.GBIF.tsv >temp.tsv')
+	system(paste('grep \"',sp,'\" orobanchaceae_coordinates.GBIF.tsv >>temp.tsv',sep=''), intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE,timeout = 0)
+	#system('head -1 orobanchaceae_coordinates.GBIF.sp_filtered.tsv >temp.tsv')
+	#system(paste('grep \"',sp,'\" orobanchaceae_coordinates.GBIF.sp_filtered.tsv >>temp.tsv',sep=''), intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE,timeout = 0)
     ##############################
 	#I. read in data or retreive data from gbif
 	#select gbif columns of interest
