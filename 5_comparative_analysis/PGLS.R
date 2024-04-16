@@ -137,6 +137,7 @@ data_clean=data[data$Phylogeny_tip!='',]
 oro_tree<-read.tree("Orobanchaceae_Mortimer_pruned.tre")
 
 oro_tree$node.label<-NULL
+comp.data<-comparative.data(oro_tree, data_clean, names.col="Phylogeny_tip", vcv.dim=2)
 model2<-pgls(area_mm~BIO1*BIO12, data=comp.data)
 Call:
 pgls(formula = area_mm ~ BIO1 * BIO12, data = comp.data)
