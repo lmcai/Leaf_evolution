@@ -9,7 +9,7 @@ for i = 1:numel(image_files)
 	red_indices = img(:,:,1) > 200 & img(:,:,2) < 50 & img(:,:,3) < 50;
 	yellow_indices = img(:,:,1) > 220 & img(:,:,2) > 200 & img(:,:,3) < 20;
 
-	% se = strel('diamond', 3);
+	se = strel('diamond', 3);
 	% red_mask=imopen(red_indices,se);
 	yellow_mask=imopen(yellow_indices,se);
 	yellow_mask=imclose(yellow_indices,se);
