@@ -42,7 +42,13 @@ The outline coordinate `*.tsv` file is a list of x and y coordinates of the outl
 
 To expand genus-level taxon sampling across Orobanchaceae as well as taxon-level sampling for several focal genera, we extracted leaf outline data from digitized specimens. 
 
-If using herbarium specimen image, use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves.
+1. Download Darwin Core database from GBIF using appropriate searching criteria (Clade = target and type = ‘preserved specimen', etc).
+  
+2. Unzip the downloaded folder, open the ‘multimedia.txt’ and filter the type to include only still images. Cross validate ‘multimedia.txt’ and ‘occurrence.txt’ to include species-level identification for selected species and multimedia data present.
+
+3. Use `GBIF_prefilter.py` to generate URLs for batch download. This will generate a `download_url.sh` file that can be executed directly to obtain all digitized images. I found this batch downloading and local processing to be more efficient that repetitively access GBIF using GUI.
+
+4. Use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves.
 
 
 # III. Fractal dimension as a measurement of leaf dissection
