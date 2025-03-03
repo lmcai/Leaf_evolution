@@ -40,6 +40,8 @@ The outline coordinate `*.tsv` file is a list of x and y coordinates of the outl
 # II. Segment leaf outline from digitized specimens obtained from GBIF
 
 
+To expand genus-level taxon sampling across Orobanchaceae as well as taxon-level sampling for several focal genera, we extracted leaf outline data from digitized specimens. 
+
 If using herbarium specimen image, use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves.
 
 
