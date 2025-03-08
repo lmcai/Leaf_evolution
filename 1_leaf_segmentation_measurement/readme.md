@@ -2,9 +2,9 @@
 
 These MatLab codes are intended to process RGB images of leaf to extract their outline and analyse it using EFD.
 
-## I. Segment leaf outline from images of chemically stained leaves
+## I. Segment leaf outline from images of chemically cleared leaves
 
-1. Use `cleared_leaf_image_segmentation.m` to convert images to binary masks.
+1. Place all images in one folder and execute `cleared_leaf_image_segmentation.m` in matlab to convert images to binary masks.
 
 2. Rotate the black-white mask to get dimension measurements
   
