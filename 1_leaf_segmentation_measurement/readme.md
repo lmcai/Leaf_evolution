@@ -48,7 +48,11 @@ To expand genus-level taxon sampling across Orobanchaceae as well as taxon-level
 
 3. Use `GBIF_prefilter.py` to generate URLs for batch download. This will generate a `download_url.sh` file that can be executed directly to obtain all digitized images. I found this batch downloading and local processing to be more efficient that repetitively access GBIF using GUI.
 
-4. Use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves.
+4. In Sketchbook, hand trace the outline of the leaf and use the [Flood Fill](https://help.sketchbook.com/en_US/Tools-overview/flood-fill) tool to speed up when possible. Save the output to PNG file as show below.
+
+![Alt text](./Agalinis_tenuifolia_5070688384.traced.png)
+  
+6. Use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves.
 
 
 # III. Fractal dimension as a measurement of leaf dissection
