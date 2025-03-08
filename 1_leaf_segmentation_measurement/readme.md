@@ -59,7 +59,7 @@ To expand genus-level taxon sampling across Orobanchaceae as well as taxon-level
 batch_specimen_leaf_segmentation('working_folder')
 ```
 
-7. 
+7. Then follow the steps sbove to rotate the images.
 
 # III. MISC: Fractal dimension as a measurement of leaf dissection
 
