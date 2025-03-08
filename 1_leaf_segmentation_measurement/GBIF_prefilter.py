@@ -5,6 +5,66 @@ from PIL import Image, ImageTk
 import requests
 from io import BytesIO
 
+a=open('occurrence.tsv').readlines()
+b=open('multimedia.tsv').readlines()
+
+aa=[l.split('\t')[0] for l in a]
+bb=[l.split('\t')[0] for l in b]
+
+z=[i for i in aa if i in bb]
+
+out=open('Euphrasia.occurrence.tsv','w')
+for l in a:
+	if l.split('\t')[0] in z:d=out.write(l)
+
+out.close()
+
+out=open('Euphrasia.multimedia.tsv','w')
+for l in b:
+	if l.split('\t')[0] in z:d=out.write(l)
+
+out.close()
+
+
+#Input
+x=open('Euphrasia.occurrence.tsv').readlines()
+y=open('Euphrasia.multimedia.tsv').readlines()
+
+
+sp=list(set([l.split('\t')[201] for l in x[1:]]))
+sp_gbifID={}
+gbifID_URL={}
+
+for l in y[1:]:
+	gbifID_URL[l.split()[0]]=l.split('\t')[3]
+
+for l in x[1:]:
+	if l.split('\t')[201] in sp_gbifID.keys():
+		sp_gbifID[l.split('\t')[201]].append(l.split()[0])
+	else:
+		sp_gbifID[l.split('\t')[201]]=[l.split()[0]]
+		
+#randomly select 20 images for each species to coarsely determine if they are good for leafmachine
+cml=[]
+for i in list(sp_gbifID.keys())[2:]:
+	# List of image URLs to process
+	print(i)
+	#root = tk.Tk()
+	#app = ImageReviewer(root, i, sp_gbifID[i])
+	#root.mainloop()
+	spp=i.replace(" ", "_")
+	if len(sp_gbifID[i])<100:
+		for j in sp_gbifID[i]:
+			cml.append('wget -O '+spp+'_'+j+'.jpg '+gbifID_URL[j])
+	else:
+		for j in range(0,100):
+			cml.append('wget -O '+spp+'_'+sp_gbifID[i][j]+'.jpg '+gbifID_URL[sp_gbifID[i][j]])
+	
+out=open('download_url.sh','w')
+out.write('\n'.join(cml))
+
+###############################
+#Abandoned function
 class ImageReviewer:
     def __init__(self, root, spp, gbifIDs):
         self.root = root
@@ -73,41 +133,6 @@ class ImageReviewer:
         self.current_index += 1
         self.load_image()
 
-
-#Input
-x=open('Lamourouxia.occurrence.tsv').readlines()
-y=open('Lamourouxia.multimedia.tsv').readlines()
-
 # Output
 output_dir = "filtered_images"
 os.makedirs(output_dir, exist_ok=True)
-
-
-sp=list(set([l.split('\t')[201] for l in x[1:]]))
-sp_gbifID={}
-gbifID_URL={}
-
-for l in y[1:]:
-	gbifID_URL[l.split()[0]]=l.split('\t')[3]
-
-for l in x[1:]:
-	if l.split('\t')[201] in sp_gbifID.keys():
-		sp_gbifID[l.split('\t')[201]].append(l.split()[0])
-	else:
-		sp_gbifID[l.split('\t')[201]]=[l.split()[0]]
-		
-#randomly select 20 images for each species to coarsely determine if they are good for leafmachine
-cml=[]
-for i in list(sp_gbifID.keys())[2:]:
-	# List of image URLs to process
-	print(i)
-	#root = tk.Tk()
-	#app = ImageReviewer(root, i, sp_gbifID[i])
-	#root.mainloop()
-	spp=i.replace(" ", "_")
-	for j in sp_gbifID[i]:
-		cml.append('wget -O '+spp+'_'+j+'.jpg '+gbifID_URL[j])
-	
-out=open('download_url.sh','w')
-out.write('\n'.join(cml))
-
