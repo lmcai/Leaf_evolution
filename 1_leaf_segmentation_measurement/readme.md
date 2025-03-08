@@ -52,10 +52,12 @@ To expand genus-level taxon sampling across Orobanchaceae as well as taxon-level
 
 ![Alt text](./Agalinis_tenuifolia_5070688384.traced.png)
   
-6. Use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves.
+5. Open each image in ImageJ and obtain the scale in pixels per millimeter.
+  
+6. Place all images in one folder and use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves and obtain dimentional measurements.
 
 
-# III. Fractal dimension as a measurement of leaf dissection
+# III. MISC: Fractal dimension as a measurement of leaf dissection
 
 Initially I want to use the fractal dimension to quantify how 'dissected' a leaf is, but I found it not useful in my case. But for those who are interested, use the function `fractal_dimension` to calculate a value for each individual leaf image.
 ```
