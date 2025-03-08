@@ -6,7 +6,7 @@ for i = 1:numel(image_files)
     % segment out yellow pixels with a broad 'yellow' spectrum to accommodate gradient colors
 	BW = im(:,:,1) > 150 & im(:,:,2) > 150 & im(:,:,3) < 100;
 	% remove small areas
-	BW=bwareaopen(BW, 30);
+	BW=bwareaopen(BW, 80);
 	% smooth out edges with Gaussian Smoothing & Thresholding
 	% BWSmooth = imgaussfilt(double(BW), 2); 
 	% BWSmooth = BWSmooth > 0.5;
