@@ -54,8 +54,12 @@ To expand genus-level taxon sampling across Orobanchaceae as well as taxon-level
   
 5. Open each image in ImageJ and obtain the scale in pixels per millimeter.
   
-6. Place all images in one folder and use `specimen_img_trace_to_individual_bw_mask.m` to segment individual leaves and obtain dimentional measurements.
+6. Place all images in one folder and use `batch_specimen_leaf_segmentation.m` to segment individual leaves and obtain dimentional measurements. TO do so, in matlab type the following command:
+```
+batch_specimen_leaf_segmentation('working_folder')
+```
 
+7. 
 
 # III. MISC: Fractal dimension as a measurement of leaf dissection
 
