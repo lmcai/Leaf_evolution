@@ -4,7 +4,9 @@ These MatLab codes are intended to process RGB images of leaf to extract their o
 
 ## I. Segment leaf outline from images of chemically cleared leaves
 
-1. Place all images in one folder and execute `cleared_leaf_image_segmentation.m` in matlab to convert images to binary masks.
+1. Place all images in one folder and execute `cleared_leaf_image_segmentation.m` in matlab to convert images to binary masks. This would create multiple black and white leaf segmentation per specimen and each representing an individual leaf.
+
+![Alt text](./initial_leaf_segment.png)  
 
 2. Rotate the black-white mask to get dimension measurements
   
@@ -20,6 +22,10 @@ for i = 1:numel(image_files)
 	rotated_img = imrotate(img, 180, 'bilinear');
 	imwrite(rotated_img,fullfile(folder_path, image_files(i).name))
 ```
+
+In the end, this should create multiple `rotated_*.png` with leaf tip oriented upwards.
+
+![Alt text](./rotated_individual_leaf.png)  
 
 3. Once satisfied with the orientation of the leaf images, place them in one folder. Then measure the dimension of the leaves using the command `batch_dimension_measurement('folder_name')`.
 
