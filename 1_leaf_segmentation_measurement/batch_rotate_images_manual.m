@@ -2,7 +2,7 @@ function batch_rotate_images_manual(folder_path)
 % Batch rotate images in a folder based on user-defined vertical direction
 
 % List all image files in the folder
-	image_files = dir(fullfile(folder_path, '*.bw.png'));
+	image_files = dir(fullfile(folder_path, 'rotated_Lamourouxia_xalapensis*.bw.png'));
 	% Loop through all image files
 	for i = 1:length(image_files)
     
@@ -16,13 +16,15 @@ function batch_rotate_images_manual(folder_path)
     if isa(img, 'uint8')
     	img=imbinarize(img);
     end
-    img = imfill(img,"holes");
     img = bwareafilt(img, 1);
     gaussianFilter = fspecial('gaussian', [5 5], 1);
 	img = imfilter(img, gaussianFilter);
+	redBackground = cat(3, ones(size(img)), zeros(size(img)), zeros(size(img)));
+	overlayImage = redBackground; % Start with red background
+	overlayImage(repmat(img, [1 1 3])) = 1;
 	% Display the image
     figure;
-    imshow(img);
+    imshow(overlayImage);
     % Prompt the user to select two points to define the rotation angle
     title(['Image ', image_files(i).name, ': Select two points to define the rotation angle']);
     hold on;
@@ -31,6 +33,7 @@ function batch_rotate_images_manual(folder_path)
     angle = atan2(y(2) - y(1), x(2) - x(1)) * 180 / pi - 90;
     % Rotate the image
     rotatedLeafBw = imrotate(img, angle);
+    rotatedLeafBw = imfill(rotatedLeafBw,"holes");
     % crop image based on bounding box
 	stats = regionprops(rotatedLeafBw, 'BoundingBox');
 	boundingBox = stats.BoundingBox;

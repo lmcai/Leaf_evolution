@@ -18,14 +18,14 @@ for i = 1:numel(image_files)
 	% BWSmooth = imopen(BWSmooth, se);
 	
 	% close holes
-	BW = imfill(BW, 'holes');
+	% BW = imfill(BW, 'holes');
 	[labeledMask, numObjects] = bwlabel(BW);
 	%imshow(labeled,[])
 	% Output individual leaf images
 	prefix = split(image_files(i).name, ".");
 	prefix = string(prefix(1));
 	for i = 1:numObjects
-		imwrite(labeledMask == i, join([folder_path,'/',prefix,'.bw.',num2str(i),'.png'],""));
+		imwrite(labeledMask == i, join([folder_path,'/',prefix,'.',num2str(i),'.bw','.png'],""));
 	end
 end
 

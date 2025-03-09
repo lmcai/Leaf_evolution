@@ -19,8 +19,11 @@ function batch_rotate_images_manual(folder_path)
     img = bwareafilt(img, 1);
     gaussianFilter = fspecial('gaussian', [5 5], 1);
 	img = imfilter(img, gaussianFilter);
+	redBackground = cat(3, ones(size(img)), zeros(size(img)), zeros(size(img)));
+	overlayImage = redBackground; % Start with red background
+	overlayImage(repmat(img, [1 1 3])) = 1;
 	% Display the image
-    imshow(img);
+    imshow(overlayImage);
     % Prompt the user to select two points to define the rotation angle
     disp(['Image ', num2str(i), ': Select two points to define the rotation angle']);
     [x,y] = ginput(2);
