@@ -12,15 +12,15 @@ for i = 1:length(image_files)
     if ndims(img) == 3
     	img=rgb2gray(img);
     	img=imbinarize(img);
-    	img = imfill(img,"holes");
+    	% img = imfill(img,"holes");
     	img=bwareafilt(img,1);
     else
     	if isa(img, 'uint8')
     		img=imbinarize(img);
-    		img = imfill(img,"holes");
+    		% img = imfill(img,"holes");
     		img=bwareafilt(img,1);
    		else
-   			img = imfill(img,"holes");
+   			% img = imfill(img,"holes");
    			img=bwareafilt(img,1);
    		end
     end
