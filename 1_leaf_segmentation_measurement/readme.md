@@ -11,7 +11,10 @@ These MatLab codes are intended to process RGB images of leaf to extract their o
 2. Rotate the black-white mask to get dimension measurements
   
    - Place all images in a folder and call the function `batch_rotate_images(folder_path)` to rotate image. This function will write a rotated image `rotated_*` to the folder
-   - Manual inspect the rotated leaves, heart shaped leaves can be tricky. Place these leaves need to be manually rotated in one folder and use `batch_rotate_images_manual(folder_path)`. This should generate a png file `rotated_*.png` where the main axis is placed vertically.
+   - Manual inspect the rotated leaves, heart shaped leaves can be tricky. Place these leaves need to be manually rotated in one folder and use `batch_rotate_images_manual(folder_path)`. This should generate a png file `rotated_*.png` where the main axis is placed vertically. After executing this command in MATLAB, there will be a pop-up window showing the leaf segmentation to be oriented (highlighted in red), click twice to determine the manual orientation. First click on the tip of the leaf, second click on the base of the leaf.
+
+![Alt text](./manual_rotate.png)  
+
    - For dissected leaves, use the function `batch_rotate_dissected_leaf(folder_path)`, which will not fill holes.
    - Some images are upside down, they need to be manually sorted into one folder and use the following script to rotate the image for 180 degree.
 ```
