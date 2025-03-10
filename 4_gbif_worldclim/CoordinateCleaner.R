@@ -59,11 +59,12 @@ clean_records <-function(sp){
                           #          "zeros", "countries")) # most test are on by default
 	#Exclude problematic records
 	dat_cl <- subdat[flags$.summary,]
-	if (length(dat_cl$species<1)) {return('Stop early.')}
+	if (length(dat_cl$species)<1) {return('Stop early.')}
 	#The flagged records
 	dat_fl <- subdat[!flags$.summary,]
 	
 	#2) identify temporal outliers
+	if (length(dat_cl$species)>1){
 	flags <- cf_age(x = dat_cl,
                 lon = "decimalLongitude",
                 lat = "decimalLatitude",
@@ -72,13 +73,14 @@ clean_records <-function(sp){
                 max_age = "year", 
                 value = "flagged")
 	dat_cl <- dat_cl[flags, ]
+	}
 	##############################
 	#IV. Improving data quality using GBIF meta-data
 	#Remove records with low coordinate precision
 	#hist(dat_cl$coordinateUncertaintyInMeters / 1000, breaks = 20)
 	dat_cl <- dat_cl %>%
 		filter(coordinateUncertaintyInMeters / 1000 <= 30 | is.na(coordinateUncertaintyInMeters))
-	if (length(dat_cl$species<1)) {return('Stop early.')}
+	if (length(dat_cl$species)<1) {return('Stop early.')}
 	#visualize
 	pdf(file = paste(sp,'.cleaned.pdf',sep=''), width = 8, height = 6)
 	plot2<-ggplot()+ coord_fixed()+ wm +

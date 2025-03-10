@@ -82,8 +82,19 @@ for (sp in sp_list$V1){
 	write.csv(sp_clim,paste('../../4_worldclim/',sp,'.worldclim.csv',sep=''), row.names=FALSE)
 }
 
-
-
+#####################################
+#Get summary stat per species for comparative analysis
+worldclim_median=c('Species','BIO1','BIO4','BIO5','BIO6','BIO12','elevation')
+for (sp in sp_list$V1){
+	if (!file.exists(paste(sp,'.cleaned.csv',sep=''))) {
+		worldclim_median=rbind(worldclim_median,c(sp,'NA','NA','NA','NA','NA','NA'))
+		next
+	}
+	sp_dat=read.csv(paste('../../4_worldclim/',sp,'.worldclim.csv',sep=''))
+	worldclim_median=rbind(worldclim_median,c(sp,median(sp_dat$BIO1,na.rm=TRUE),median(sp_dat$BIO4,na.rm=TRUE),median(sp_dat$BIO5,na.rm=TRUE),median(sp_dat$BIO6,na.rm=TRUE),median(sp_dat$BIO12,na.rm=TRUE),median(sp_dat$elevation,na.rm=TRUE)))
+}
+	
+write.csv(worldclim_median,'worldclim_median.csv',row.names=FALSE)
 
 #visualization
 col_pal <- colorRampPalette(c("darkblue", "blue", "green", "yellow", "red"))
