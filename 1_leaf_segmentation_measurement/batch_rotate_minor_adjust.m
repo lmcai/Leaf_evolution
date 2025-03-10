@@ -3,7 +3,7 @@ function batch_rotate_minor_adjust(folder_path)
 % Rotation is restricted to ±45 degrees to avoid excessive transformations
 
 % List all image files in the folder
-image_files = dir(fullfile(folder_path, '*bw.png'));
+image_files = dir(fullfile(folder_path, 'rotated_Agalinis*bw.png'));
 
 % Loop through all image files
 for i = 1:length(image_files)
@@ -68,17 +68,32 @@ function theta = getLongestAxisAngle(img)
     % Compute the coordinates of the foreground pixels
     [y, x] = find(img);
     
+    % If less than two unique points, return 0 degrees (no valid orientation)
+    if length(unique(x)) < 2 || length(unique(y)) < 2
+        theta = 0;
+        return;
+    end
+    
     % Center the coordinates
     x = x - mean(x);
     y = y - mean(y);
     
+    % Compute covariance matrix
+    covarianceMatrix = cov([x, y]); % Ensures full 2×2 matrix
+    
+    % Check if covariance matrix is 2×2
+    if size(covarianceMatrix, 1) < 2
+        theta = 0;
+        return;
+    end
+    
     % Perform Principal Component Analysis (PCA)
-    covarianceMatrix = cov(x, y);
     [eigenvectors, ~] = eig(covarianceMatrix);
     
-    % Extract the longest axis orientation
-    longestAxisVector = eigenvectors(:, 2);
+    % Ensure we get the second eigenvector (longest axis)
+    longestAxisVector = eigenvectors(:, end);  % Always pick last column
     
     % Compute the angle in degrees
     theta = atan2d(longestAxisVector(2), longestAxisVector(1));
 end
+

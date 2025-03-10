@@ -1,7 +1,6 @@
 function [width width_bbx length_bbx total_area solidity circularity EI]=dimension_measurement(im)
 	stats = regionprops(im, 'BoundingBox');
 	width = get_width(im);
-	%length_linear = linear_leaf_len(im);
 	width_bbx = stats(1).BoundingBox(3);
 	length_bbx = stats(1).BoundingBox(4);
 	% Calculate the connected components in the binary image
@@ -18,7 +17,7 @@ function [width width_bbx length_bbx total_area solidity circularity EI]=dimensi
 	cvHull_Area = cvHull_props.Area;
 	solidity = total_area/cvHull_Area;
 	
-	% circularity = 4 * pi * area/parimeter^2
+	% circularity = 4 * pi * area/perimeter^2
 	% Use the built-in circularity function of the image processing toolbox
 	%perimeter = bwperim(im);
 	% Count number of perimeter pixels
