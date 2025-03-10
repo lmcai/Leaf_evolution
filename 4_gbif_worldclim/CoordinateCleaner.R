@@ -6,14 +6,14 @@ library(rgbif)
 library(sp)
 
 clean_records <-function(sp){
-	system('head -1 orobanchaceae_coordinates.GBIF.tsv >temp.tsv')
-	system(paste('grep \"',sp,'\" orobanchaceae_coordinates.GBIF.tsv >>temp.tsv',sep=''), intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE,timeout = 0)
+	system('head -1 ../0000662-250310093411724.tsv >temp.tsv')
+	system(paste('grep \"',sp,'\" ../0000662-250310093411724.tsv >>temp.tsv',sep=''), intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE,timeout = 0)
 	#system('head -1 orobanchaceae_coordinates.GBIF.sp_filtered.tsv >temp.tsv')
 	#system(paste('grep \"',sp,'\" orobanchaceae_coordinates.GBIF.sp_filtered.tsv >>temp.tsv',sep=''), intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE,timeout = 0)
     ##############################
 	#I. read in data or retreive data from gbif
 	#select gbif columns of interest
-	dat=read.table('temp.tsv',header=T,sep='\t',fill=T)
+	dat=read.table('temp.tsv',header=T,sep='\t',fill=T,quote = "")
 	subdat <- dat %>%
   		dplyr::select(species, infraspecificEpithet, decimalLongitude, decimalLatitude, elevation, countryCode, gbifID, taxonRank, coordinateUncertaintyInMeters, year, basisOfRecord, institutionCode)
     #Remove unsuitable data sources, especially fossils 
@@ -30,6 +30,7 @@ clean_records <-function(sp){
 	subdat=subdat[!is.na(subdat$decimalLongitude) & !is.na(subdat$decimalLatitude),]
     subdat<- subdat%>%
     	filter(taxonRank =='SPECIES' | taxonRank =='SUBSPECIES' | taxonRank =='VARIETY' )
+    if (length(subdat$species)>40000){subdat=subdat[1:40000,]}
 	##############################
 	#II. Visualize the data on a map
 	#plot data to get an overview
@@ -52,12 +53,16 @@ clean_records <-function(sp){
                            lat = "decimalLatitude",
                            countries = "countryCode",
                            species = "species",
-                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
-                                    "zeros", "countries")) # most test are on by default
+                           tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "zeros")) # most test are on by default
+                          #tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                          #          "zeros", "countries")) # most test are on by default
 	#Exclude problematic records
 	dat_cl <- subdat[flags$.summary,]
+	if (length(dat_cl$species<1)) {return('Stop early.')}
 	#The flagged records
 	dat_fl <- subdat[!flags$.summary,]
+	
 	#2) identify temporal outliers
 	flags <- cf_age(x = dat_cl,
                 lon = "decimalLongitude",
@@ -73,7 +78,7 @@ clean_records <-function(sp){
 	#hist(dat_cl$coordinateUncertaintyInMeters / 1000, breaks = 20)
 	dat_cl <- dat_cl %>%
 		filter(coordinateUncertaintyInMeters / 1000 <= 30 | is.na(coordinateUncertaintyInMeters))
-
+	if (length(dat_cl$species<1)) {return('Stop early.')}
 	#visualize
 	pdf(file = paste(sp,'.cleaned.pdf',sep=''), width = 8, height = 6)
 	plot2<-ggplot()+ coord_fixed()+ wm +
@@ -94,6 +99,7 @@ clean_records <-function(sp){
 sp_list=read.csv('oro_sp_set1.txt',header=F)
 num_rec=c('Species','raw_gbif','filtered_gbif')
 for (sp in sp_list$V1){
+	print(sp)
 	num_rec=rbind(num_rec,c(sp,clean_records(sp)))
 }
 

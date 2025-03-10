@@ -2,26 +2,26 @@ library(raster)
 
 
 #Load the elevation and biological variable data using the "raster" package
-elev <- raster("wc2.1_30s_elev.tif")
-BIO1 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_1.tif")
-BIO2 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_2.tif")
-BIO3 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_3.tif")
-BIO4 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_4.tif")
-BIO5 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_5.tif")
-BIO6 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_6.tif")
-BIO7 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_7.tif")
-BIO8 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_8.tif")
-BIO9 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_9.tif")
-BIO10 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_10.tif")
-BIO11 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_11.tif")
-BIO12 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_12.tif")
-BIO13 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_13.tif")
-BIO14 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_14.tif")
-BIO15 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_15.tif")
-BIO16 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_16.tif")
-BIO17 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_17.tif")
-BIO18 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_18.tif")
-BIO19 <- raster ("../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_19.tif")
+elev <- raster("../../4_worldclim/wc2.1_30s_elev.tif")
+BIO1 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_1.tif")
+BIO2 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_2.tif")
+BIO3 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_3.tif")
+BIO4 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_4.tif")
+BIO5 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_5.tif")
+BIO6 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_6.tif")
+BIO7 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_7.tif")
+BIO8 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_8.tif")
+BIO9 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_9.tif")
+BIO10 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_10.tif")
+BIO11 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_11.tif")
+BIO12 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_12.tif")
+BIO13 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_13.tif")
+BIO14 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_14.tif")
+BIO15 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_15.tif")
+BIO16 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_16.tif")
+BIO17 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_17.tif")
+BIO18 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_18.tif")
+BIO19 <- raster ("../../4_worldclim/wc2.1_30s_bio/wc2.1_30s_bio_19.tif")
 
 
 #define functions
@@ -75,10 +75,11 @@ get_worlclimbio<-function(sp_dat){
 sp_list=read.csv('oro_sp_set1.txt',header=F)
 
 for (sp in sp_list$V1){
+	if (!file.exists(paste(sp,'.cleaned.csv',sep=''))) {next}
 	sp_dat=read.csv(paste(sp,'.cleaned.csv',sep=''))
 	sp_clim=get_elevation(sp_dat)
 	sp_clim=get_worlclimbio(sp_clim)
-	write.csv(sp_clim,paste('../4_worldclim/',sp,'.worldclim.csv',sep=''), row.names=FALSE)
+	write.csv(sp_clim,paste('../../4_worldclim/',sp,'.worldclim.csv',sep=''), row.names=FALSE)
 }
 
 
