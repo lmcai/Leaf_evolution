@@ -28,22 +28,6 @@ In the end, this should create multiple `rotated_*.png` with leaf tip oriented u
 
 ![Alt text](./rotated_individual_leaf.png)  
 
-3. Once satisfied with the orientation of the leaf images, place them in one folder. Then measure the dimension of the leaves using the command `batch_dimension_measurement('folder_name')`.
-
-This will generate a 'leaf_dimension' file with the following five metrics: 
-
-```
-Area = total leaf area in pixel
-Length = vertital axis length in pixel
-Width = horizontal axis length in pixel
-Aspect ratio = width/length
-Solidity = area/convex_hull
-Ellipticalness Index = 4 * Area / (π * L * W)
-Circularity = 4 * pi * area/parimeter^2
-```
-The outline coordinate `*.tsv` file is a list of x and y coordinates of the outline of the leaf. They can be used by Momocs (R package) for EFD analysis.
-
-
 # II. Segment leaf outline from digitized specimens obtained from GBIF
 
 
@@ -66,13 +50,34 @@ To expand genus-level taxon sampling across Orobanchaceae as well as taxon-level
 batch_specimen_leaf_segmentation('working_folder')
 ```
 
-This would create multiple black and white leaf segmentation per specimen and each representing an individual leaf.
+This would create multiple black and white leaf segmentations per specimen and each representing an individual leaf.
 
 ![Alt text](./initial_leaf_segment.png)  
 
-7. Then follow the steps sbove to rotate the images.
+7. Then follow the steps above to rotate the images.
 
-# III. MISC: Fractal dimension as a measurement of leaf dissection
+# III. Stat summarize
+
+1. Once satisfied with the orientation of the leaf images, place them in one folder. Then measure the dimension of the leaves using the command `batch_dimension_measurement('folder_name')`.
+
+This will generate a 'leaf_dimension' file with the following five metrics: 
+
+```
+Area = total leaf area in pixel
+Length = vertital axis length in pixel
+Width = horizontal axis length in pixel
+Aspect ratio = width/length
+Solidity = area/convex_hull
+Ellipticalness Index = 4 * Area / (π * L * W)
+Circularity = 4 * pi * area/parimeter^2
+```
+The outline coordinate `*.tsv` file is a list of x and y coordinates of the outline of the leaf. They can be used by Momocs (R package) for EFD analysis.
+
+For linear leaves that could be curved, use `batch_dimension_measurement_linear('folder_name')` to obtain measurements.
+
+2. All measurements will be contained in the summary spreadsheet `leaf_dimension.csv`. Use `sum_leaf_trait.py` to calculate median per species.
+
+# MISC: Fractal dimension as a measurement of leaf dissection
 
 Initially I want to use the fractal dimension to quantify how 'dissected' a leaf is, but I found it not useful in my case. But for those who are interested, use the function `fractal_dimension` to calculate a value for each individual leaf image.
 ```
