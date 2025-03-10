@@ -4,10 +4,8 @@ These MatLab codes are intended to process RGB images of leaf to extract their o
 
 ## I. Segment leaf outline from images of chemically cleared leaves
 
-1. Place all images in one folder and execute `cleared_leaf_image_segmentation.m` in matlab to convert images to binary masks. This would create multiple black and white leaf segmentation per specimen and each representing an individual leaf.
-
-![Alt text](./initial_leaf_segment.png)  
-
+1. Place all images in one folder and execute `cleared_leaf_image_segmentation.m` in matlab to convert images to binary masks.
+   
 2. Rotate the black-white mask to get dimension measurements
   
    - Place all images in a folder and call the function `batch_rotate_images(folder_path)` to rotate image. This function will write a rotated image `rotated_*` to the folder
@@ -67,6 +65,10 @@ To expand genus-level taxon sampling across Orobanchaceae as well as taxon-level
 ```
 batch_specimen_leaf_segmentation('working_folder')
 ```
+
+This would create multiple black and white leaf segmentation per specimen and each representing an individual leaf.
+
+![Alt text](./initial_leaf_segment.png)  
 
 7. Then follow the steps sbove to rotate the images.
 
