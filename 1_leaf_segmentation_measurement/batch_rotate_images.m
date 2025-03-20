@@ -2,7 +2,7 @@ function batch_rotate_images(folder_path)
 % Batch rotate images in a folder based on user-defined vertical direction
 
 % List all image files in the folder
-image_files = dir(fullfile(folder_path, '*bw.png'));
+image_files = dir(fullfile(folder_path, 'S30_1_59.91ppm.bw.png'));
 %leaf_dim = ["ID" "width" "length" "area"];
 % Loop through all image files
 for i = 1:length(image_files)

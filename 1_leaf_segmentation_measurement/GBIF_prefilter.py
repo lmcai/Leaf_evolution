@@ -13,13 +13,13 @@ bb=[l.split('\t')[0] for l in b]
 
 z=[i for i in aa if i in bb]
 
-out=open('Euphrasia.occurrence.tsv','w')
+out=open('other.occurrence.tsv','w')
 for l in a:
 	if l.split('\t')[0] in z:d=out.write(l)
 
 out.close()
 
-out=open('Euphrasia.multimedia.tsv','w')
+out=open('other.multimedia.tsv','w')
 for l in b:
 	if l.split('\t')[0] in z:d=out.write(l)
 
@@ -27,8 +27,8 @@ out.close()
 
 
 #Input
-x=open('Euphrasia.occurrence.tsv').readlines()
-y=open('Euphrasia.multimedia.tsv').readlines()
+x=open('other.occurrence.tsv').readlines()
+y=open('other.multimedia.tsv').readlines()
 
 
 sp=list(set([l.split('\t')[201] for l in x[1:]]))
@@ -38,11 +38,13 @@ gbifID_URL={}
 for l in y[1:]:
 	gbifID_URL[l.split()[0]]=l.split('\t')[3]
 
+
 for l in x[1:]:
 	if l.split('\t')[201] in sp_gbifID.keys():
 		sp_gbifID[l.split('\t')[201]].append(l.split()[0])
 	else:
 		sp_gbifID[l.split('\t')[201]]=[l.split()[0]]
+
 		
 #randomly select 20 images for each species to coarsely determine if they are good for leafmachine
 cml=[]
@@ -59,6 +61,8 @@ for i in list(sp_gbifID.keys())[2:]:
 	else:
 		for j in range(0,100):
 			cml.append('wget -O '+spp+'_'+sp_gbifID[i][j]+'.jpg '+gbifID_URL[sp_gbifID[i][j]])
+
+
 	
 out=open('download_url.sh','w')
 out.write('\n'.join(cml))

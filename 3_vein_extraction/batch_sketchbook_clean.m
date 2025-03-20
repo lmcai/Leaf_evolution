@@ -1,6 +1,6 @@
 function batch_sketchbook_clean(folder_path)
 % get names of all images files
-image_files = dir(fullfile(folder_path, '*.png'));
+image_files = dir(fullfile(folder_path, '*traced.png'));
 for i = 1:numel(image_files)
 	% Read the PNG image
 	img = imread(fullfile(folder_path, image_files(i).name));
@@ -16,6 +16,7 @@ for i = 1:numel(image_files)
 
 	red_mask = red_indices > 0;
 	yellow_mask = yellow_indices > 0;
+	%yellow_mask=bwareafilt(yellow_mask,1);
 
 	% Create a white background image
 	%white_bg = uint8(ones(size(red_mask)) * 255);
@@ -28,6 +29,8 @@ for i = 1:numel(image_files)
 	% Fill gap with red
 	redyellow_mask= red_mask + yellow_mask;
 	filled_redyellow_mask=imfill(redyellow_mask,'holes');
+	%se = strel('diamond', 2);
+	%filled_redyellow_mask=imclose(redyellow_mask,se);
 	gap=filled_redyellow_mask & ~redyellow_mask;
 	red_mask(gap)=1;
 
