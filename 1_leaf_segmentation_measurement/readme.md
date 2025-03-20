@@ -52,7 +52,7 @@ This would create multiple black and white leaf segmentations per specimen and e
 
 ![Alt text](./initial_leaf_segment.png)  
 
-7. Then follow the steps above to rotate the images.
+7. Then use the script `batch_rotate_images_manual_specimen(folder_path)` to rotate the images. This script will require the user to click on the tip and bottom of the leaf to rotate it.
 
 # III. Stat summarize
 
