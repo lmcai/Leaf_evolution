@@ -67,6 +67,6 @@ function maxWidth = get_linear_width(mask, skeleton)
     maxWidth = max(widthList);
     width_bbx = get_width(mask);
     if maxWidth > 2 * width_bbx
-    	maxWidth = width_bbx
+    	maxWidth = width_bbx;
     end
 end

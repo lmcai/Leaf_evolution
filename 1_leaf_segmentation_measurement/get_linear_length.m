@@ -54,3 +54,4 @@ end
 
 axis_path = shortestPath;
 linear_length = pathLength; 
+% linear_length = maxDist;
