@@ -54,6 +54,8 @@ This would create multiple black and white leaf segmentations per specimen and e
 
 7. Then use the script `batch_rotate_images_manual_specimen(folder_path)` to rotate the images. This script will require the user to click on the tip and bottom of the leaf to rotate it.
 
+![Alt text](./manual_rotate.png)
+
 # III. Stat summarize
 
 1. Once satisfied with the orientation of the leaf images, place them in one folder. Then measure the dimension of the leaves using the command `batch_dimension_measurement('folder_name')`.
