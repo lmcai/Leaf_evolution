@@ -1,6 +1,6 @@
 function batch_dimension_measurement_linear(folder_path)
 % Batch measures the leaf dimensions and areas, output to a csv file named 'leaf_dimention.csv'
-image_files = dir(fullfile(folder_path, 'rotated_Agalinis*.png'));
+image_files = dir(fullfile(folder_path, 'rotated_Anisantherina*.png'));
 leaf_dim = ["ID" "width" "length" "area" "Solidity" "Circularity" "Ellipticalness_Index"];
 for i = 1:numel(image_files)
 	% image_files(i).name
