@@ -7,15 +7,15 @@ library(dplyr)
 # Load dataset (replace 'your_data.csv' with actual file path)
 data <- read.csv("leaf_dimension_sum_v2.csv")
 
-data <- data[, c("ID", "Solidity_corrected", "Circularity","Ellipticalness_Index","Aspect_ratio_width.length","Species")]
+data_numeric <- data[, c("ID", "Solidity_corrected", "Circularity","Ellipticalness_Index","Aspect_ratio_width.length","length_bbx_mm","Species")]
 
-data_numeric = data[,-1]
+data_numeric = data_numeric[,-1]
 
 
 #############################
 #PCA
 
-leaf.pca <- prcomp(data_numeric[, -5],  center = TRUE, scale = TRUE)
+leaf.pca <- prcomp(data_numeric[, -6],  center = TRUE, scale = TRUE)
 
 # Summary of PCA results (variance explained by each component)
 summary(leaf.pca)
