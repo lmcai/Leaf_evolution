@@ -1,6 +1,4 @@
 function [teeth_number] = teeth_counting(bw,file_name)
-bw = im2bw(bw); % Ensure it is binary (if not already)
-
 % Extract the leaf boundary
 [B, ~] = bwboundaries(bw, 'noholes');
 
@@ -60,7 +58,8 @@ distances_smooth = movmean(distances, window_size);
 
 % Set adaptive threshold for detecting valleys
 % min_height = mean(distances_smooth) - std(distances_smooth); % Dynamic threshold
-min_prominence = median(proms) * 0.5; % Adjust for meaningful valleys
+min_empirical_prominence = median(proms) * 0.5; % Adjust for meaningful valleys
+min_prominence = max(1,min_empirical_prominence);
 % [valleys, locs] = findpeaks(-distances_smooth, 'MinPeakHeight', -min_height, 'MinPeakProminence', min_prominence);
 [valleys, locs] = findpeaks(-distances_smooth, 'MinPeakProminence', min_prominence);
 
@@ -75,7 +74,10 @@ hold on;
 plot(hull_x, hull_y, 'g-', 'LineWidth', 2);
 plot(x(locs), y(locs), 'ro', 'MarkerSize', 5, 'LineWidth', 2);
 plot(start_x, start_y, 'ms', 'MarkerSize', 8, 'LineWidth', 2);
-saveas(fig, 'leaf_teeth_detection.png');  % Save as PNG
+
+outfile_name=split(string(file_name),'.png');
+outfile_name=string(outfile_name(1));
+saveas(fig, join([outfile_name,'.teeth.png'],""));  % Save as PNG
 close(fig);
 
 % ---------------- Plot Results for debug purposes ----------------
