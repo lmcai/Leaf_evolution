@@ -2,7 +2,7 @@ function batch_rotate_images_manual_specimen(folder_path)
 % Batch rotate images in a folder based on user-defined vertical direction
 
 % List all image files in the folder
-image_files = dir(fullfile(folder_path, 'Nothobartsia_spicata_4072582415.*.bw.png'));
+image_files = dir(fullfile(folder_path, 'Lamourouxia_lanceolata*.bw.png'));
 
 % Loop through all image files
 for i = 1:length(image_files)

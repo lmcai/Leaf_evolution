@@ -1,6 +1,6 @@
 function batch_dimension_measurement(folder_path)
 % Batch measures the leaf dimensions and areas, output to a csv file named 'leaf_dimention.csv'
-image_files = dir(fullfile(folder_path, 'rotated_*.png'));
+image_files = dir(fullfile(folder_path, 'rotated_*bw.png'));
 leaf_dim = ["ID" "width" "width_bbx" "length_bbx" "area" "Solidity" "Circularity" "Ellipticalness_Index" "teeth_number"];
 for i = 1:numel(image_files)
 	image_files(i).name
