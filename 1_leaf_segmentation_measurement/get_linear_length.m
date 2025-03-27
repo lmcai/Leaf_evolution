@@ -53,5 +53,5 @@ if ~isnan(D(p2(2), p2(1))) % Ensure a valid path exists
 end
 
 axis_path = shortestPath;
-linear_length = pathLength; 
-% linear_length = maxDist;
+% linear_length = pathLength; 
+linear_length = maxDist;

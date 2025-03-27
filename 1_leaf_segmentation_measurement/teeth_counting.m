@@ -51,31 +51,31 @@ start_distance = distances(1);
 
 % ---------SPECIMENS--------------------------
 % Smooth the distance function to reduce noise
-%window_size = 5; % Adjust for more/less smoothing
-%distances_smooth = movmean(distances, window_size);
-
-% Detect valleys (local minima) in the distance function to get a distribution of the prominence
-%[valleys,locs,widths,proms] = findpeaks(-distances_smooth);
-
-% Set adaptive threshold for detecting valleys
-%min_empirical_prominence = median(proms) * 0.5; % Adjust for meaningful valleys
-%min_prominence = max(1,min_empirical_prominence);
-% [valleys, locs] = findpeaks(-distances_smooth, 'MinPeakHeight', -min_height, 'MinPeakProminence', min_prominence);
-%[valleys, locs] = findpeaks(-distances_smooth, 'MinPeakProminence', min_prominence);
-
-% ---------CLEARED LEAVES--------------------------
-window_size = 20; % Adjust for more/less smoothing
+window_size = 5; % Adjust for more/less smoothing
 distances_smooth = movmean(distances, window_size);
 
 % Detect valleys (local minima) in the distance function to get a distribution of the prominence
-[valleys,locs,widths,proms] = findpeaks(-distances_smooth,'MinPeakProminence', 4);
+[valleys,locs,widths,proms] = findpeaks(-distances_smooth);
 
-% Set threshold in cleared leaves
-%Q3 = prctile(proms, 75);
-%top_25_percent = proms(proms >= Q3);
-%min_empirical_prominence = median(top_25_percent) * 0.7; 
-%min_prominence = max(1,min_empirical_prominence);
-%[valleys, locs] = findpeaks(-distances_smooth, 'MinPeakProminence', min_prominence);
+% Set adaptive threshold for detecting valleys
+min_empirical_prominence = median(proms) * 0.5; % Adjust for meaningful valleys
+min_prominence = max(1,min_empirical_prominence);
+%%%%% [valleys, locs] = findpeaks(-distances_smooth, 'MinPeakHeight', -min_height, 'MinPeakProminence', min_prominence);
+[valleys, locs] = findpeaks(-distances_smooth, 'MinPeakProminence', min_prominence);
+
+% ---------CLEARED LEAVES--------------------------
+%window_size = 20; % Adjust for more/less smoothing
+%distances_smooth = movmean(distances, window_size);
+
+% Detect valleys (local minima) in the distance function to get a distribution of the prominence
+%[valleys,locs,widths,proms] = findpeaks(-distances_smooth,'MinPeakProminence', 4);
+
+%%%% Set threshold in cleared leaves
+%%%%Q3 = prctile(proms, 75);
+%%%%%%top_25_percent = proms(proms >= Q3);
+%%%%%%min_empirical_prominence = median(top_25_percent) * 0.7; 
+%%%%%%min_prominence = max(1,min_empirical_prominence);
+%%%%%%[valleys, locs] = findpeaks(-distances_smooth, 'MinPeakProminence', min_prominence);
 
 % ---------------- Return the number of teeth ---------------
 

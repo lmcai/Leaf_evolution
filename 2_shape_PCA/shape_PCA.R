@@ -37,6 +37,9 @@ data_numeric$Species='x'
 data_numeric$Species[2229:2400]=data$Species[2229:2400]
 fviz_pca_biplot(leaf.pca, label = "var", habillage=data_numeric$Species,addEllipses=TRUE, ellipse.level=0.95, ggtheme = theme_minimal())
 
+data_numeric$Species='x'
+data_numeric$Species[1254:1749]=data$Species[1254:1749]
+fviz_pca_biplot(leaf.pca, label = "var", habillage=data_numeric$Species,addEllipses=TRUE, ellipse.level=0.95, ggtheme = theme_minimal())
 
 ####################################
 #K-meas clustering

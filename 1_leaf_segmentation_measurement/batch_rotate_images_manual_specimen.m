@@ -2,7 +2,7 @@ function batch_rotate_images_manual_specimen(folder_path)
 % Batch rotate images in a folder based on user-defined vertical direction
 
 % List all image files in the folder
-image_files = dir(fullfile(folder_path, 'Lamourouxia_lanceolata*.bw.png'));
+image_files = dir(fullfile(folder_path, '*.bw.png'));
 
 % Loop through all image files
 for i = 1:length(image_files)
@@ -19,6 +19,7 @@ for i = 1:length(image_files)
     
     % Keep only the largest connected component
     img = bwareafilt(img, 1);
+    img = imfill(img, "holes");
     
     % Read the corresponding background image
     filename = split(image_files(i).name, '.');
@@ -85,7 +86,6 @@ for i = 1:length(image_files)
 
     % Rotate the BW mask
     rotatedLeafBw = imrotate(img, angle);
-    rotatedLeafBw = imfill(rotatedLeafBw, "holes");
 
     % Get new bounding box after rotation
     stats = regionprops(rotatedLeafBw, 'BoundingBox');
