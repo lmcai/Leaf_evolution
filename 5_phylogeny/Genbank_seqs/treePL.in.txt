@@ -1,0 +1,37 @@
+treefile = concatenation.rooted.tre
+numsites = 5554
+outfile = Orobanchaceae.combined.treePL.tre
+smooth = 1
+thorough
+#prime
+
+mrca = node1 Cymbaria_daurica Cymbaria_mongolica
+mrca = node2 Aureolaria_pedicularia Aureolaria_flava
+mrca = node3 Centranthera_grandiflora Alectra_fruticosa
+mrca = node4 Rhinanthus_angustifolius Rhinanthus_alectorolophus
+mrca = node5 Rhinanthus_crista-galli Rhinanthus_serotinus
+
+
+min = node1 2.8424
+max = node1 2.8424
+min = node2 1.8528
+max = node2 1.8528
+min = node3 7.5122
+max = node3 7.5122
+min = node4 1.3273
+max = node4 1.3273
+min = node5 1.0714
+max = node5 1.0714
+
+
+#cv
+#randomcv
+#cvstart = 1000
+#cvstop = 0.001
+#cvoutfile = Agalinis_treePL.cv.txt
+opt = 5
+moredetail
+optad = 2
+optcvad = 2
+moredetailcvad
+
