@@ -1,0 +1,26 @@
+treefile = Agalinis_nuc_cp_combined.tre
+numsites = 3315
+outfile = Agalinis_nuc_cp_combined.treePL.tre
+smooth = 1
+thorough
+#prime
+
+mrca = node1 Aureolaria_pedicularia Agalinis_calycina
+mrca = node2 Agalinis_strictifolia Agalinis_viridis
+
+min = node1 5.8111
+max = node1 5.8111
+min = node2 3.7201
+max = node2 3.7201
+
+#cv
+#randomcv
+#cvstart = 1000
+#cvstop = 0.001
+#cvoutfile = Agalinis_treePL.cv.txt
+
+opt = 4
+moredetail
+optad = 2
+moredetailad
+optcvad = 2
