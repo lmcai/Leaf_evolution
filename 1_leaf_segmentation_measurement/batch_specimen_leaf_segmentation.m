@@ -1,5 +1,5 @@
 function batch_specimen_leaf_segmentation(folder_path)
-image_files = dir(fullfile(folder_path, 'Castilleja_applegatei*.traced.png'));
+image_files = dir(fullfile(folder_path, '*.traced.png'));
 
 for i = 1:numel(image_files)
     im = imread(fullfile(folder_path, image_files(i).name));
