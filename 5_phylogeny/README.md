@@ -17,3 +17,7 @@ The original clade specific phylogenies, treePL control file, and calibrated tim
 ### III. Taxonomy- and biogeography-informed placement of uncertain species
 
 We sampled around 20 species with no sequences available. For these species, they were placed using our best knowledge of their phylogenetic position based on taxonomy or biogeography. The reference used to constrain their phylogenetic position is provided in ##. We used the `bond.tip` function from the R package phytools to facilitate species addition on a time tree. See the R script `add_tip_to_tree.R` for details.
+
+### IV. The final phylogeny used for downstream analysis
+
+After merging and adding, the phylogeny `Orobanchaceae_complete.tre` is used for leaf shaped based comparative analysis.
