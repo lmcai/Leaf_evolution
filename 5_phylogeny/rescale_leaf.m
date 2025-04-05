@@ -1,5 +1,5 @@
 % Load CSV file
-data = readtable('file_data.csv');  % Replace with your actual CSV file name
+data = readtable('image_scale.csv');  % Replace with your actual CSV file name
 
 % Pixel density
 pixelsPerMM = 6;
@@ -39,11 +39,42 @@ for i = 1:height(data)
     reversed = ~resized;
 
     % Generate output file name
-    [filepath, name, ~] = fileparts(filename);
-    outputName = fullfile(filepath, [name, '_rescaled.png']);
-
+    %[filepath, name, ~] = fileparts(filename);
+    %outputName = fullfile(filepath, [name, '_rescaled.png']);
     % Save the image
-    imwrite(reversed, outputName);
+    %imwrite(reversed, outputName);
+    %fprintf('Processed: %s -> %s\n', filename, outputName);
+    
+    %%%%%%%%%%
+    boundaries = bwboundaries(resized, 'noholes');
 
+% Generate output file name
+[filepath, name, ~] = fileparts(filename);
+outputName = fullfile(filepath, [name, '_vectorized.svg']);
+
+% Create transparent figure
+fig = figure('Visible', 'off', 'Color', 'none');
+ax = axes('Parent', fig, 'Color', 'none');
+axis equal off
+hold on
+
+% Plot the object as a smooth filled patch
+for k = 1:length(boundaries)
+    boundary = boundaries{k};
+    % Smooth the edges using spline interpolation
+    t = 1:length(boundary);
+    ts = linspace(1, length(boundary), 10 * length(boundary));  % 10x smoothing
+    xs = spline(t, boundary(:,2), ts);
+    ys = spline(t, boundary(:,1), ts);
+    
+    patch(xs, ys, 'k', 'EdgeColor', 'none', 'FaceColor', 'black');  % Fill with black
+end
+
+% Save as SVG (vector paths)
+print(fig, outputName, '-dsvg');
+
+% Close figure
+close(fig);
     fprintf('Processed: %s -> %s\n', filename, outputName);
+    
 end

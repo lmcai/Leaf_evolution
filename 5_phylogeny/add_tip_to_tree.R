@@ -52,4 +52,23 @@ tree <- bind.tip(tree, tip.label="Vellosiella_spathacea",where=mrca_node, positi
 node=which(tree$tip.label=="Vellosiella_spathacea")
 tree <- bind.tip(tree, tip.label="Vellosiella_westermanii",where=node, position=2.4367)
 
+node=which(tree$tip.label=="Brandisia_scandens")
+tree <- bind.tip(tree, tip.label="Brandisia_chevalieri",where=node, position=0.4738)
+
+taxon1 <- "Neobartsia_pedicularoides"
+taxon2 <- "Neobartsia_thiantha"
+mrca_node <- findMRCA(tree, c(taxon1, taxon2))
+tree <- bind.tip(tree, tip.label="Neobartsia_laticrenata",where=mrca_node, position=0.1232)
+
+taxon1 <- "Brandisia_scandens"
+taxon2 <- "Brandisia_chevalieri"
+mrca_node <- findMRCA(tree, c(taxon1, taxon2))
+tree <- bind.tip(tree, tip.label="Brandisia_discolor",where=mrca_node, position=2.7262)
+
+taxon1 <- "Buchnera_americana"
+taxon2 <- "Buchnera_floridana"
+mrca_node <- findMRCA(tree, c(taxon1, taxon2))
+tree <- bind.tip(tree, tip.label="Buchnera_pusilla",where=mrca_node, position=0.7150)
+
+
 write.tree(tree,outfile='Orobanchaceae_complete.tre')
