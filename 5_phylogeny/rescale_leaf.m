@@ -18,7 +18,7 @@ tileWidths = zeros(panelSize, 1);
 
 % Process each image
 for i = 1:height(data)
-    filename = data{i, 1}{1};
+    filename = data{i, 3}{1};
     current_scale = data{i, 4};
 
     if ~isfile(filename)
@@ -49,7 +49,7 @@ for i = 1:height(data)
     tileImages{tileIndex} = reversed;
     [tileHeights(tileIndex), tileWidths(tileIndex)] = size(reversed);
     tileIndex = tileIndex + 1;
-    fprintf('%s %d\n',filename, tileIndex);
+    %fprintf('%s %d\n',filename, tileIndex);
 
     % When panel is full or last image reached
     if tileIndex > panelSize || i == height(data)
