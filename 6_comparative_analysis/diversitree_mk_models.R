@@ -75,7 +75,7 @@ write.csv(coding, 'data/sequencing_rpoB/processed/transition_rates/coding.csv', 
 # run diversitree analysis of discrete character evolution ####
 #-------------------------------------------------------------#
 
-# all of these methods needs a likelihood function, we can build a Mkn model
+# all of these methods needs a likelihood function, we can build a Mkn model, where all rates are different (ard)
 lik_ard <- make.mkn(tree, hab_pref_num, k = max(hab_pref_num))
 
 argnames(lik_ard)
