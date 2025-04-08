@@ -45,6 +45,7 @@ leaf_type <- setNames(d_meta$Leaf_type_code, d_meta$tip_label)
 #-------------------------------------------------------------#
 
 # all of these methods needs a likelihood function, we can build a Mkn model
+# make free-rate model
 lik_ard <- make.mkn(tree, leaf_type, k = 5)
 
 argnames(lik_ard)
@@ -68,9 +69,6 @@ lik_er <- constrain(lik_ard,
 
 argnames(lik_er)
 
-lik_transient <- constrain(lik_ard,
-                           q24~0, q25~0, q42~0, q52~0, q14~0, q41~0, q45~0, q54~0)
-
 # need to pass start values to it - can grab these from the ape::ace, but we will just pass an average rate to the model
 inits_ard <- rep(1, length(argnames(lik_ard)))
 inits_sym <- rep(1, length(argnames(lik_sym)))
@@ -80,50 +78,74 @@ inits_trans <- rep(1, length(argnames(lik_transient)))
 # run first four models
 mod_er <- find.mle(lik_er, inits_er, method = 'subplex', control = list(maxit = 50000))
 mod_ard <- find.mle(lik_ard, inits_ard, method = 'subplex', control = list(maxit = 50000))
-mod_trans <- find.mle(lik_transient, inits_trans, method = 'subplex', control = list(maxit = 50000))
 mod_sym <- find.mle(lik_sym, inits_sym, method = 'subplex', control = list(maxit = 50000))
 
-# compare models
-AIC(mod_sym, mod_ard, mod_er, mod_trans) %>% arrange(AIC)
+mod_trans <- find.mle(lik_transient, inits_trans, method = 'subplex', control = list(maxit = 50000))
 
+# compare models
+AIC(mod_sym, mod_ard, mod_er) %>% arrange(AIC)
+#screen output
+#        df      AIC
+#mod_sym 10 587.2009
+#mod_ard 20 585.1804
+#mod_er   1 638.7089
+
+#best model so far is the free-rate model
 # sort parameter estimates
 mod_ard$par %>% sort()
 
+#screen output
+#         q41          q15          q54          q21          q13          q14          q12 
+#1.259705e-08 2.281745e-08 4.740207e-08 6.421735e-08 7.828645e-08 1.440591e-07 2.429235e-07 
+#         q43          q34          q31          q45          q42          q53          q25 
+#4.824731e-07 4.275463e-06 4.774599e-06 7.329453e-03 1.768095e-02 2.203570e-02 2.359307e-02 
+#         q51          q23          q24          q35          q52          q32 
+#2.836598e-02 4.275612e-02 6.148707e-02 6.418779e-02 7.356371e-02 1.325169e-01 
+
+
 # get parameters close to 0.
-mod_ard$par[mod_ard$par < 1e-03] %>% names(.)
+mod_ard$par[mod_ard$par < 1e-05] %>% names(.)
+# [1] "q12" "q13" "q14" "q15" "q21" "q31" "q34" "q41" "q43" "q54"
 
 # make custom matrix model
-lik_custom1 <- constrain(lik_ard, 
-                     q14~0, q24~0, q25~0, q35~0, q41~0, q42~0, q53~0)
+lik_stepwise <- constrain(lik_ard, 
+                     q12~0, q13~0, q14~0, q15~0, q21~0, q31~0, q34~0, q41~0, q43~0, q54~0)
 
 # make start parameters
-inits_custom1 <- rep(1, length(argnames(lik_custom1)))
+inits_stepwise <- rep(1, length(argnames(lik_stepwise)))
 
 # refit model
-mod_custom1 <- find.mle(lik_custom1, inits_custom1, method = 'subplex', control = list(maxit = 50000))
+mod_stepwise <- find.mle(lik_stepwise, inits_stepwise, method = 'subplex', control = list(maxit = 50000))
 
 # do AIC comparison
-AIC(mod_sym, mod_ard, mod_er, mod_trans, mod_custom1) %>% arrange(AIC)
+AIC(mod_sym, mod_ard, mod_er, mod_stepwise) %>% arrange(AIC)
+#             df      AIC
+#mod_stepwise 10 565.1790
+#mod_ard      20 585.1804
+#mod_sym      10 587.2009
+#mod_er        1 638.7089
+
 
 # filter for only estimated parameters
-mod_custom1$par.full[names(mod_custom1$par.full) %in% argnames(lik_custom1)] 
+mod_stepwise$par.full[names(mod_stepwise$par.full) %in% argnames(lik_stepwise)] 
 
 # sort parameter estimates
-mod_custom1$par %>% sort()
+mod_stepwise$par %>% sort()
+#        q45         q42         q53         q25         q51         q23         q24 
+#0.007339757 0.017666104 0.021739576 0.023550707 0.028343851 0.042847938 0.061495248 
+#        q35         q52         q32 
+#0.064493094 0.074163383 0.132217983 
 
 # make custom matrix model again
-lik_custom2 <- constrain(lik_ard, 
-                         q14~0, q24~0, q25~0, q35~0, q41~0, q42~0, q53~0,
-                         q45~0)
+lik_stepwise2 <- constrain(lik_ard, 
+                     q12~0, q13~0, q14~0, q15~0, q21~0, q31~0, q34~0, q41~0, q43~0, q54~0, q45~0)
 
 # make start parameters
-inits_custom2 <- rep(1, length(argnames(lik_custom2)))
-
-# run model
-mod_custom2 <- find.mle(lik_custom2, inits_custom2, method = 'subplex', control = list(maxit = 50000))
+inits_stepwise2 <- rep(1, length(argnames(lik_stepwise2)))
+mod_stepwise2 <- find.mle(lik_stepwise, inits_stepwise, method = 'subplex', control = list(maxit = 50000))
 
 # do AIC comparison
-AIC(mod_sym, mod_ard, mod_er, mod_trans, mod_custom1, mod_custom2) %>% arrange(AIC)
+AIC(mod_sym, mod_ard, mod_er, mod_stepwise, mod_stepwise2) %>% arrange(AIC)
 
 # sort parameter estimates
 mod_custom2$par %>% sort()
