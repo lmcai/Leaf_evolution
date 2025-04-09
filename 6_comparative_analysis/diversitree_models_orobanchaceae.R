@@ -193,31 +193,40 @@ save_as_docx(table, path = 'diversitree_model_table.docx')
 # save out best markov model
 # saveRDS(mod_custom3, 'data/sequencing_rpoB/processed/transition_rates/mod_custom_3.rds')
 
-# plot_transition_matrix
-diversitree_df <- get_diversitree_df(mod_stepwise, coding$hab_pref_num, coding$hab_pref)
+# Stochastic character mapping
+Q <- matrix(c(
+0,0,0,0,0,
+0,-0.127893893,0.042847938,0.061495248,0.023550707,
+0,0.132217983,-0.196711077,0,0.064493094,
+0,0.017666104,0,-0.025005861,0.007339757,
+0.028343851,0.074163383,0.021739576,0,-0.12424681),
+5, 5, byrow=TRUE
+)
+rownames(Q) <- colnames(Q) <- c("1", "2", "3", "4", "5")
+mapped_trees <- make.simmap(tree, leaf_type, Q=Q, nsim=100,pi='fitzjohn')
+summary(mapped_trees)
+#100 trees with a mapped discrete character with states:
+# 1, 2, 3, 4, 5 
 
-diversitree_df %>%
-  left_join(., select(coding, state_1 = hab_pref, state_1_num = hab_pref_num, state_1_label = hab_pref_axis)) %>%
-  left_join(., select(coding, state_2 = hab_pref, state_2_num = hab_pref_num, state_2_label = hab_pref_axis)) %>%
-  mutate(transition_rate = round(transition_rate, 2)) %>%
-  ggplot(., aes(forcats::fct_reorder(state_2_label, state_2_num), forcats::fct_reorder(state_1_label, desc(state_1_num)))) +
-  geom_tile(aes(alpha = transition_rate, col = free_param), width = 0.9, height = 0.9, size = 1.1) +
-  theme_bw(base_size = 14) +
-  theme(panel.grid.major = element_blank(),
-  legend.position = 'none',
-  axis.text.x.top = element_text(angle = 90, vjust = 0.5),
-  plot.title.position = "plot") +
-  scale_alpha_continuous(range = c(0, 0.6)) +
-  geom_text(aes(label = transition_rate), size = MicrobioUoE::pts(10)) +
-  scale_x_discrete(position = 'top', labels = scales::label_wrap(13)) +
-  scale_y_discrete(position = 'left', labels = scales::label_wrap(13)) +
-  labs(y = 'From',
-  x = 'To',
-  title = paste('all rates different with', length(mod_custom3$par), 'free parameters', sep = ' ')) +
-  coord_fixed() +
-  scale_color_manual(values = c('red', 'black'))
+#trees have 133.27 changes between states on average
 
-ggsave('plots/sequencing_rpoB/transition_matrix.png', last_plot(), height = 5, width = 7)
+#changes are of the following types:
+#     1,2 1,3 1,4 1,5 2,1  2,3   2,4   2,5 3,1   3,2 3,4   3,5 4,1  4,2 4,3  4,5  5,1   5,2
+#x->y   0   0   0   0   0 20.2 28.97 11.46   0 25.84   0 12.55   0 7.97   0 3.41 5.05 13.71
+#      5,3 5,4
+#x->y 4.11   0
+
+#mean total time spent in each state is:
+#                1           2           3           4           5    total
+#raw  121.95998222 471.6367700 195.1689483 459.6294336 183.3684798 1431.764
+#prop   0.08518165   0.3294097   0.1363137   0.3210233   0.1280718    1.000
+
+
+## plot a posterior probabilities of ancestral states
+cols<-setNames(c("blue","red","green","yellow","brown"),c("1", "2", "3", "4", "5"))
+plot(summary(mapped_trees),colors=cols,ftype="i")
+
+
 
 #------------------------------------#
 # plot best transition rate model ####
