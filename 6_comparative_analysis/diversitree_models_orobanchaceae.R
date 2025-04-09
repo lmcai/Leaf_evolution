@@ -142,55 +142,19 @@ lik_stepwise2 <- constrain(lik_ard,
 
 # make start parameters
 inits_stepwise2 <- rep(1, length(argnames(lik_stepwise2)))
-mod_stepwise2 <- find.mle(lik_stepwise, inits_stepwise, method = 'subplex', control = list(maxit = 50000))
+mod_stepwise2 <- find.mle(lik_stepwise2, inits_stepwise2, method = 'subplex', control = list(maxit = 50000))
 
 # do AIC comparison
 AIC(mod_sym, mod_ard, mod_er, mod_stepwise, mod_stepwise2) %>% arrange(AIC)
 
 # sort parameter estimates
-mod_custom2$par %>% sort()
+mod_stepwise2$par %>% sort()
 
-# make custom matrix model
-lik_custom3 <- constrain(lik_ard, 
-                         q14~0, q24~0, q25~0, q35~0, q41~0, q42~0, q53~0,
-                         q45~0,
-                         q54~0)
-
-# make start parameters
-inits_custom3 <- rep(1, length(argnames(lik_custom3)))
-
-# run model
-mod_custom3 <- find.mle(lik_custom3, inits_custom3, method = 'subplex', control = list(maxit = 50000))
-
-# do AIC comparison
-AIC(mod_sym, mod_ard, mod_er, mod_trans, mod_custom1, mod_custom2, mod_custom3) %>% arrange(AIC)
-
-# sort parameter estimates
-mod_custom3$par %>% sort()
-
-# make custom matrix model
-lik_custom4 <- constrain(lik_ard, 
-                         q14~0, q24~0, q25~0, q35~0, q41~0, q42~0, q53~0,
-                         q45~0,
-                         q54~0,
-                         q43~0)
-
-# make start parameters
-inits_custom4 <- rep(1, length(argnames(lik_custom4)))
-
-# run model
-mod_custom4 <- find.mle(lik_custom4, inits_custom4, method = 'subplex', control = list(maxit = 50000))
-
-# do AIC comparison
-AIC(mod_sym, mod_ard, mod_er, mod_trans, mod_custom1, mod_custom2, mod_custom3, mod_custom4) %>% arrange(AIC)
-
-# sort parameter estimates
-mod_custom4$par %>% sort()
 
 # lets look at model weights
-d_aic <- AIC(mod_sym, mod_ard, mod_er, mod_trans, mod_custom1, mod_custom2, mod_custom3, mod_custom4) %>%
+d_aic <- AIC(mod_sym, mod_ard, mod_er, mod_stepwise, mod_stepwise2) %>%
   data.frame() %>%
-  mutate(log_lik = c(mod_sym$lnLik, mod_ard$lnLik, mod_er$lnLik, mod_trans$lnLik, mod_custom1$lnLik, mod_custom2$lnLik, mod_custom3$lnLik, mod_custom4$lnLik),
+  mutate(log_lik = c(mod_sym$lnLik, mod_ard$lnLik, mod_er$lnLik, mod_stepwise$lnLik, mod_stepwise2$lnLik),
          ntips = 2621) %>%
   janitor::clean_names() %>%
   rownames_to_column(var = 'model') %>%
@@ -198,18 +162,15 @@ d_aic <- AIC(mod_sym, mod_ard, mod_er, mod_trans, mod_custom1, mod_custom2, mod_
          aic_weight = round(MuMIn::Weights(aic), 2),
          aicc_weight = round(MuMIn::Weights(aicc), 2)) %>%
   arrange(aic)
-# mod custom 3 is favoured pretty highly
+# mod_stepwise is favored pretty highly
 
 # make this into a table
 d_table <- select(d_aic, model, df, log_lik, aic, aic_weight) %>%
   mutate(model = case_when(model == 'mod_er' ~ 'ER',
                            model == 'mod_ard' ~ 'ARD',
                            model == 'mod_sym' ~ 'SYM',
-                           model == 'mod_trans' ~ 'Stepwise',
-                           model == 'mod_custom1' ~ 'Simplified ARD 1',
-                           model == 'mod_custom2' ~ 'Simplified ARD 2',
-                           model == 'mod_custom3' ~ 'Simplified ARD 3',
-                           model == 'mod_custom4' ~ 'Simplified ARD 4'))
+                           model == 'mod_stepwise' ~ 'Stepwise',
+                           model == 'mod_stepwise2' ~ 'Stepwise 2'))
 
 # make table
 table <- d_table %>%
@@ -226,14 +187,14 @@ table <- d_table %>%
   fontsize(size = 16, part = 'all') %>%
   autofit() 
 
-save_as_image(table, 'plots/manuscript_plots/markov_model_table.png')
-save_as_docx(table, path = 'plots/manuscript_plots/markov_model_table.docx')
+# save_as_image(table, 'plots/manuscript_plots/markov_model_table.png')
+save_as_docx(table, path = 'diversitree_model_table.docx')
 
 # save out best markov model
-saveRDS(mod_custom3, 'data/sequencing_rpoB/processed/transition_rates/mod_custom_3.rds')
+# saveRDS(mod_custom3, 'data/sequencing_rpoB/processed/transition_rates/mod_custom_3.rds')
 
 # plot_transition_matrix
-diversitree_df <- get_diversitree_df(mod_custom3, coding$hab_pref_num, coding$hab_pref)
+diversitree_df <- get_diversitree_df(mod_stepwise, coding$hab_pref_num, coding$hab_pref)
 
 diversitree_df %>%
   left_join(., select(coding, state_1 = hab_pref, state_1_num = hab_pref_num, state_1_label = hab_pref_axis)) %>%
