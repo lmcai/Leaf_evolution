@@ -14,7 +14,6 @@
 librarian::shelf(here, tidyverse, ggtree, ggnewscale, RColorBrewer, patchwork, phytools, diversitree, tidygraph, igraph, ggraph, GGally, ggrepel, flextable, padpadpadpad/MicrobioUoE, cli)
 
 # read in datasets ####
-
 # read in habitat preference
 d_leaf <- read.csv('leaf_type.csv')
 
@@ -73,14 +72,11 @@ argnames(lik_er)
 inits_ard <- rep(1, length(argnames(lik_ard)))
 inits_sym <- rep(1, length(argnames(lik_sym)))
 inits_er <- rep(1, length(argnames(lik_er)))
-inits_trans <- rep(1, length(argnames(lik_transient)))
 
 # run first four models
 mod_er <- find.mle(lik_er, inits_er, method = 'subplex', control = list(maxit = 50000))
 mod_ard <- find.mle(lik_ard, inits_ard, method = 'subplex', control = list(maxit = 50000))
 mod_sym <- find.mle(lik_sym, inits_sym, method = 'subplex', control = list(maxit = 50000))
-
-mod_trans <- find.mle(lik_transient, inits_trans, method = 'subplex', control = list(maxit = 50000))
 
 # compare models
 AIC(mod_sym, mod_ard, mod_er) %>% arrange(AIC)
