@@ -22,9 +22,7 @@ You can download global biome shapefiles or raster versions of these systems.
 Using GIS or spatial tools (in R, Python, or QGIS):
 
 In R (example):
-r
-Copy
-Edit
+```
 library(sf)
 library(raster)
 library(dplyr)
@@ -44,10 +42,12 @@ species_biomes <- joined %>%
   group_by(species, BIOME_NAME) %>%
   summarise(n_points = n()) %>%
   arrange(desc(n_points))
+```
+
 In Python (using GeoPandas):
 python
-Copy
-Edit
+
+```
 import geopandas as gpd
 import pandas as pd
 
@@ -63,6 +63,7 @@ joined = gpd.sjoin(species_gdf, biomes, how="left", op="intersects")
 
 # Summarize
 biome_summary = joined.groupby(["species", "BIOME_NAME"]).size().reset_index(name='counts')
+```
 🌡️ 4. (Optional) Use Climatic Clustering Instead of Biome Maps
 If you prefer to define biomes based on climatic niche rather than predefined maps, you can:
 
