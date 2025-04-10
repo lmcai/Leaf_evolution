@@ -53,7 +53,7 @@ clean_records <-function(sp){
                            lat = "decimalLatitude",
                            countries = "countryCode",
                            species = "species",
-                           tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                           tests = c("capitals","outliers", "centroids", "equal","gbif", "institutions",
                                     "zeros")) # most test are on by default
                           #tests = c("capitals", "centroids", "equal","gbif", "institutions",
                           #          "zeros", "countries")) # most test are on by default
