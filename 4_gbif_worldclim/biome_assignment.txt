@@ -1,0 +1,102 @@
+ 1. Gather Species Distribution / Niche Data
+You should already have:
+
+Species occurrence points (lat/lon), ideally many per species.
+
+Associated climate variables (from WorldClim2: Bio1–Bio19, etc.)
+
+🗺️ 2. Choose a Biome or Ecoregion Classification Scheme
+Pick one of the standard global biome classification systems:
+
+WWF Terrestrial Ecoregions / Biomes (Olson et al. 2001)
+
+Holdridge Life Zones
+
+Köppen-Geiger Climate Classification
+
+Bailey's Ecoregions
+
+You can download global biome shapefiles or raster versions of these systems.
+
+🧩 3. Overlay Species Distributions with Biome Layers
+Using GIS or spatial tools (in R, Python, or QGIS):
+
+In R (example):
+r
+Copy
+Edit
+library(sf)
+library(raster)
+library(dplyr)
+
+# Load species occurrence
+species_occ <- read.csv("occurrences.csv") # columns: species, lat, lon
+species_pts <- st_as_sf(species_occ, coords = c("lon", "lat"), crs = 4326)
+
+# Load biome shapefile
+biomes <- st_read("WWF_terrestrial_ecoregions.shp")
+
+# Spatial join to assign biome to each point
+joined <- st_join(species_pts, biomes)
+
+# Summarize biome usage by species
+species_biomes <- joined %>%
+  group_by(species, BIOME_NAME) %>%
+  summarise(n_points = n()) %>%
+  arrange(desc(n_points))
+In Python (using GeoPandas):
+python
+Copy
+Edit
+import geopandas as gpd
+import pandas as pd
+
+species_occ = pd.read_csv("occurrences.csv")
+species_gdf = gpd.GeoDataFrame(
+    species_occ,
+    geometry=gpd.points_from_xy(species_occ.lon, species_occ.lat),
+    crs="EPSG:4326"
+)
+
+biomes = gpd.read_file("WWF_terrestrial_ecoregions.shp")
+joined = gpd.sjoin(species_gdf, biomes, how="left", op="intersects")
+
+# Summarize
+biome_summary = joined.groupby(["species", "BIOME_NAME"]).size().reset_index(name='counts')
+🌡️ 4. (Optional) Use Climatic Clustering Instead of Biome Maps
+If you prefer to define biomes based on climatic niche rather than predefined maps, you can:
+
+Extract WorldClim2 variables at occurrence points
+
+Perform clustering (e.g., k-means, hierarchical) on the climate variables
+
+Assign species to climate-defined clusters
+
+Example (R):
+
+r
+Copy
+Edit
+# Extract climate data
+climate_stack <- stack("bio1.tif", "bio12.tif", ...) # select relevant variables
+climate_vals <- extract(climate_stack, species_pts)
+
+# PCA or clustering
+climate_pca <- prcomp(climate_vals, scale. = TRUE)
+clusters <- kmeans(climate_pca$x[,1:2], centers = 5) # pick # of clusters
+species_occ$climate_cluster <- clusters$cluster
+You can then interpret the clusters as biome-like units: e.g., one cluster might correspond to "wet tropics", another to "arid shrubland", etc., depending on variable ranges.
+
+🧠 5. Assign a Dominant Biome per Species
+Once each occurrence is labeled with a biome (from map or cluster), assign:
+
+Majority rule (e.g., >50% of occurrences in one biome)
+
+Weighted score (if you want to reflect spread)
+
+r
+Copy
+Edit
+dominant_biome <- species_biomes %>%
+  group_by(species) %>%
+  slice_max(order_by = n_points, n = 1)
